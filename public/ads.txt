@@ -1,0 +1,2 @@
+# ads.txt placeholder
+# Add your ad network entries here when ready
