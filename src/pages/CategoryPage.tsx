@@ -19,11 +19,11 @@ export default function CategoryPage() {
     const timer = setTimeout(() => {
       if (converterRef.current) {
         converterRef.current.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'center' 
+          behavior: 'auto', 
+          block: 'start' 
         });
       }
-    }, 100);
+    }, 50);
     
     return () => clearTimeout(timer);
   }, [categoryId]);
