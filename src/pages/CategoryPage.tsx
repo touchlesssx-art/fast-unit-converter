@@ -20,10 +20,10 @@ export default function CategoryPage() {
       if (converterRef.current) {
         converterRef.current.scrollIntoView({ 
           behavior: 'smooth', 
-          block: 'start' 
+          block: 'center' 
         });
       }
-    }, 250);
+    }, 100);
     
     return () => clearTimeout(timer);
   }, [categoryId]);
