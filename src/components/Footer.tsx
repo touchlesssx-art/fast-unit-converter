@@ -50,7 +50,8 @@ export default function Footer() {
         </div>
         
         <div className="border-t border-border/20 mt-8 pt-6 text-center text-sm opacity-75">
-          <p>ConverterX © 2025. All rights reserved.</p>
+          <p>ConverterX © 2025 — Live currency rates powered by exchangerate.host</p>
+          <p className="mt-1">All rights reserved.</p>
         </div>
       </div>
     </footer>
