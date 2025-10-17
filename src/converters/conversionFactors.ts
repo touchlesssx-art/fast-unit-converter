@@ -146,6 +146,7 @@ export const categories: Category[] = [
   { id: 'energy', name: 'Energy', icon: 'Battery', units: energyUnits },
   { id: 'pressure', name: 'Pressure', icon: 'Wind', units: pressureUnits },
   { id: 'data', name: 'Data', icon: 'HardDrive', units: dataUnits },
+  { id: 'currency', name: 'Currency', icon: 'DollarSign', units: {} },
 ];
 
 export function convert(value: number, fromUnit: Unit, toUnit: Unit): number {
