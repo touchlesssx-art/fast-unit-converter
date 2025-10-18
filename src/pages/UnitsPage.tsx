@@ -28,14 +28,16 @@ export default function UnitsPage() {
               </h1>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {categories.map(category => (
-                  <CategoryCard
-                    key={category.id}
-                    id={category.id}
-                    name={category.name}
-                    icon={category.icon}
-                  />
-                ))}
+                {categories
+                  .filter(category => category.id !== 'currency')
+                  .map(category => (
+                    <CategoryCard
+                      key={category.id}
+                      id={category.id}
+                      name={category.name}
+                      icon={category.icon}
+                    />
+                  ))}
               </div>
             </div>
           </div>
