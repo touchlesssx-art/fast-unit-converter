@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeftRight, Copy, TrendingUp } from 'lucide-react';
+import { ArrowLeftRight, Copy, TrendingUp, Search } from 'lucide-react';
 import { fetchExchangeRates, fetchHistoricalRates, type CurrencyInfo } from '@/utils/currencyApi';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { toast } from '@/hooks/use-toast';
@@ -29,6 +29,8 @@ export default function CurrencyConverter() {
   const [historicalData, setHistoricalData] = useState<{ date: string; rate: number }[]>([]);
   const [recentConversions, setRecentConversions] = useState<CurrencyConversion[]>([]);
   const [allCurrencies, setAllCurrencies] = useState<CurrencyInfo[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
 
   // Fetch all available currencies on mount
   useEffect(() => {
@@ -173,16 +175,81 @@ export default function CurrencyConverter() {
     }
   };
 
+  const filteredCurrencies = allCurrencies.filter(currency => 
+    currency.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    currency.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleCurrencySelect = (code: string) => {
+    setSelectedCurrency(code);
+    setFromCurrency(code);
+  };
+
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-fade-in">
-      {/* Main Converter Card */}
-      <Card className="p-6 md:p-8 shadow-lg rounded-2xl bg-card/50 backdrop-blur-sm border-2">
-        <div className="text-center mb-6">
-          <h2 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-[#7b61ff] to-[#5ab8ff] bg-clip-text text-transparent">
-            💸 Currency Converter
-          </h2>
-          <p className="text-muted-foreground">Real-time exchange rates for all major currencies</p>
+      {/* Search Section */}
+      <Card className="p-6 rounded-2xl shadow-lg bg-gradient-to-br from-card/80 to-card/50 backdrop-blur-sm border-2">
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Input
+            type="text"
+            placeholder="Search currencies (e.g., USD, Euro, Dollar...)"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-12 h-14 text-lg rounded-xl border-2 focus:border-primary transition-all"
+          />
         </div>
+      </Card>
+
+      {/* Currency List */}
+      <Card className="p-6 rounded-2xl shadow-lg">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold mb-2">All Major Currencies</h2>
+          <p className="text-muted-foreground">
+            {filteredCurrencies.length} {filteredCurrencies.length === 1 ? 'currency' : 'currencies'} available
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[600px] overflow-y-auto pr-2">
+          {filteredCurrencies.map((currency) => (
+            <div
+              key={currency.code}
+              onClick={() => handleCurrencySelect(currency.code)}
+              className={`flex items-center gap-3 p-4 rounded-xl transition-all cursor-pointer border-2 ${
+                selectedCurrency === currency.code
+                  ? 'bg-gradient-to-r from-primary/20 to-accent/20 border-primary shadow-lg scale-105'
+                  : 'bg-gradient-to-r from-muted/30 to-muted/10 border-transparent hover:from-primary/10 hover:to-accent/10 hover:border-primary/50'
+              }`}
+            >
+              <span className="text-3xl">{currency.flag}</span>
+              <div className="flex-1">
+                <div className={`font-bold text-lg ${selectedCurrency === currency.code ? 'text-primary' : ''}`}>
+                  {currency.code}
+                </div>
+                <div className="text-sm text-muted-foreground line-clamp-1">
+                  {currency.name}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        {filteredCurrencies.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground text-lg">No currencies found matching "{searchQuery}"</p>
+          </div>
+        )}
+      </Card>
+
+      {/* Converter Section - Shows when currency is selected */}
+      {selectedCurrency && (
+        <Card className="p-6 md:p-8 shadow-lg rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 backdrop-blur-sm border-2 border-primary/20">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              💸 Convert {getCurrencyName(selectedCurrency)}
+            </h2>
+            <p className="text-muted-foreground">Real-time exchange rates</p>
+          </div>
 
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 items-end mb-6">
           {/* From Currency */}
@@ -263,20 +330,21 @@ export default function CurrencyConverter() {
           </Button>
         </div>
 
-        {exchangeRate && (
-          <div className="text-center py-4 bg-gradient-to-r from-primary/5 to-accent/5 rounded-xl border border-primary/20">
-            <p className="text-lg font-semibold">
-              1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}
-            </p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Updated just now — Powered by ConverterX API
-            </p>
-          </div>
-        )}
-      </Card>
+          {exchangeRate && (
+            <div className="text-center py-4 bg-gradient-to-r from-primary/5 to-accent/5 rounded-xl border border-primary/20">
+              <p className="text-lg font-semibold">
+                1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Updated just now — Powered by ConverterX API
+              </p>
+            </div>
+          )}
+        </Card>
+      )}
 
       {/* Exchange Rate Chart - Dark Futuristic */}
-      {historicalData.length > 0 && (
+      {selectedCurrency && historicalData.length > 0 && (
         <Card className="p-6 rounded-2xl overflow-hidden" style={{
           background: 'linear-gradient(135deg, #0b132b 0%, #1a1f3a 100%)',
           border: '1px solid rgba(123, 97, 255, 0.2)',
@@ -329,7 +397,7 @@ export default function CurrencyConverter() {
       )}
 
       {/* Recent Conversions */}
-      {recentConversions.length > 0 && (
+      {selectedCurrency && recentConversions.length > 0 && (
         <Card className="p-6 rounded-2xl shadow-lg">
           <h3 className="text-xl font-semibold mb-4">Recent Conversions</h3>
           <div className="space-y-2">
@@ -350,33 +418,6 @@ export default function CurrencyConverter() {
         </Card>
       )}
 
-      {/* Currency List */}
-      <Card className="p-6 rounded-2xl shadow-lg">
-        <h3 className="text-xl font-semibold mb-4">Browse All Currencies (A–Z)</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-96 overflow-y-auto pr-2">
-          {allCurrencies.map((currency) => (
-            <div
-              key={currency.code}
-              className="flex items-center gap-3 p-3 bg-gradient-to-r from-muted/30 to-muted/10 rounded-xl hover:from-primary/10 hover:to-accent/10 transition-all cursor-pointer group"
-              onClick={() => {
-                setFromCurrency(currency.code);
-                setResult('');
-                setExchangeRate(null);
-              }}
-            >
-              <span className="text-2xl">{currency.flag}</span>
-              <div className="flex-1">
-                <div className="font-semibold group-hover:text-primary transition-colors">
-                  {currency.code}
-                </div>
-                <div className="text-xs text-muted-foreground line-clamp-1">
-                  {currency.name}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Card>
     </div>
   );
 }
