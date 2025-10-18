@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { categories } from '@/converters/conversionFactors';
 import Navbar from '@/components/Navbar';
@@ -10,23 +10,8 @@ import CurrencyConverter from '@/components/CurrencyConverter';
 export default function CategoryPage() {
   const { categoryId } = useParams<{ categoryId: string }>();
   const [searchOpen, setSearchOpen] = useState(false);
-  const converterRef = useRef<HTMLDivElement>(null);
   
   const category = categories.find(c => c.id === categoryId);
-  
-  useEffect(() => {
-    // Auto-scroll to converter after render
-    const timer = setTimeout(() => {
-      if (converterRef.current) {
-        converterRef.current.scrollIntoView({ 
-          behavior: 'auto', 
-          block: 'start' 
-        });
-      }
-    }, 50);
-    
-    return () => clearTimeout(timer);
-  }, [categoryId]);
   
   if (!category) {
     return <div>Category not found</div>;
@@ -40,7 +25,7 @@ export default function CategoryPage() {
       
       <main className="flex-1 py-12 px-4">
         <div className="container mx-auto">
-          <div className="text-center mb-8" ref={converterRef}>
+          <div className="text-center mb-8">
             <h1 className="text-4xl font-bold mb-2">
               {isCurrency ? '💸 ' : ''}{category.name} Converter
             </h1>
