@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
+import UnitsPage from "./pages/UnitsPage";
 import CategoryPage from "./pages/CategoryPage";
 import ConvertPage from "./pages/ConvertPage";
 import About from "./pages/About";
@@ -24,6 +25,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/units" element={<UnitsPage />} />
             <Route path="/category/:categoryId" element={<CategoryPage />} />
             <Route path="/convert/:slug" element={<ConvertPage />} />
             <Route path="/about" element={<About />} />

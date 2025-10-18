@@ -66,7 +66,7 @@ export default function Index() {
                   
                   {/* Unit Card */}
                   <button
-                    onClick={() => setSearchOpen(true)}
+                    onClick={() => navigate('/units')}
                     className="group relative overflow-hidden bg-gradient-to-br from-secondary/5 to-secondary/10 hover:from-secondary/10 hover:to-secondary/20 rounded-2xl p-8 md:p-10 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in border border-secondary/20 hover:border-secondary/40"
                     style={{ animationDelay: '0.5s' }}
                   >
