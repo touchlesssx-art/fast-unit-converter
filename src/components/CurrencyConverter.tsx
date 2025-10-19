@@ -246,10 +246,9 @@ export default function CurrencyConverter() {
       {selectedCurrency && (
         <Card className="p-6 md:p-8 shadow-lg rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 backdrop-blur-sm border-2 border-primary/20">
           <div className="text-center mb-6">
-            <h2 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               💸 Convert {getCurrencyName(selectedCurrency)}
             </h2>
-            <p className="text-muted-foreground">Real-time exchange rates</p>
           </div>
 
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 items-end mb-6">
@@ -344,58 +343,6 @@ export default function CurrencyConverter() {
         </Card>
       )}
 
-      {/* Exchange Rate Chart - Dark Futuristic */}
-      {selectedCurrency && historicalData.length > 0 && (
-        <Card className="p-6 rounded-2xl overflow-hidden" style={{
-          background: 'linear-gradient(135deg, #0b132b 0%, #1a1f3a 100%)',
-          border: '1px solid rgba(123, 97, 255, 0.2)',
-        }}>
-          <div className="flex items-center gap-2 mb-6">
-            <TrendingUp className="h-5 w-5" style={{ color: '#7b61ff' }} />
-            <h3 className="text-xl font-semibold text-white">
-              Exchange Rate Trend (Last 14 Days)
-            </h3>
-          </div>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={historicalData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-              <XAxis 
-                dataKey="date" 
-                stroke="rgba(255,255,255,0.6)"
-                tick={{ fontSize: 12, fill: 'rgba(255,255,255,0.6)' }}
-              />
-              <YAxis 
-                stroke="rgba(255,255,255,0.6)"
-                tick={{ fontSize: 12, fill: 'rgba(255,255,255,0.6)' }}
-                domain={['auto', 'auto']}
-              />
-              <Tooltip 
-                contentStyle={{
-                  backgroundColor: '#1a1f3a',
-                  border: '1px solid rgba(123, 97, 255, 0.3)',
-                  borderRadius: '12px',
-                  color: '#fff',
-                }}
-                labelStyle={{ color: '#fff' }}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="rate" 
-                stroke="url(#chartGradient)" 
-                strokeWidth={3}
-                dot={{ fill: '#7b61ff', r: 4, strokeWidth: 2, stroke: '#5ab8ff' }}
-                activeDot={{ r: 6 }}
-              />
-              <defs>
-                <linearGradient id="chartGradient" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#7b61ff" />
-                  <stop offset="100%" stopColor="#5ab8ff" />
-                </linearGradient>
-              </defs>
-            </LineChart>
-          </ResponsiveContainer>
-        </Card>
-      )}
 
       {/* Recent Conversions */}
       {selectedCurrency && recentConversions.length > 0 && (
