@@ -210,25 +210,26 @@ export default function CurrencyConverter() {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[600px] overflow-y-auto pr-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[600px] overflow-y-auto pr-2">
           {filteredCurrencies.map((currency) => (
             <div
               key={currency.code}
               onClick={() => handleCurrencySelect(currency.code)}
-              className={`flex items-center gap-3 p-4 rounded-xl transition-all cursor-pointer border-2 ${
+              className={`flex items-center gap-3 p-4 rounded-xl transition-all duration-200 cursor-pointer ${
                 selectedCurrency === currency.code
-                  ? 'bg-gradient-to-r from-primary/20 to-accent/20 border-primary shadow-lg scale-105'
-                  : 'bg-gradient-to-r from-muted/30 to-muted/10 border-transparent hover:from-primary/10 hover:to-accent/10 hover:border-primary/50'
+                  ? 'bg-white border-2 border-primary shadow-lg scale-[1.02]'
+                  : 'bg-white border border-border hover:scale-[1.02] hover:shadow-md'
               }`}
             >
-              <span className="text-3xl">{currency.flag}</span>
+              <span className="text-2xl">{currency.flag}</span>
               <div className="flex-1">
-                <div className={`font-bold text-lg ${selectedCurrency === currency.code ? 'text-primary' : ''}`}>
+                <span className={`font-bold text-base ${selectedCurrency === currency.code ? 'text-primary' : 'text-foreground'}`}>
                   {currency.code}
-                </div>
-                <div className="text-sm text-muted-foreground line-clamp-1">
+                </span>
+                <span className="text-foreground"> — </span>
+                <span className="text-sm text-foreground">
                   {currency.name}
-                </div>
+                </span>
               </div>
             </div>
           ))}
