@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import UnitsPage from "./pages/UnitsPage";
 import CategoryPage from "./pages/CategoryPage";
 import ConvertPage from "./pages/ConvertPage";
+import CurrencyConversionPage from "./pages/CurrencyConversionPage";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/units" element={<UnitsPage />} />
             <Route path="/category/:categoryId" element={<CategoryPage />} />
             <Route path="/convert/:slug" element={<ConvertPage />} />
+            <Route path="/currency/:currency" element={<CurrencyConversionPage />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy" element={<Privacy />} />

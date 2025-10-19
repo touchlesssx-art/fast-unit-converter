@@ -1,36 +1,14 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeftRight, Copy, Search, ArrowLeft } from 'lucide-react';
-import { fetchExchangeRates, fetchHistoricalRates, type CurrencyInfo } from '@/utils/currencyApi';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { toast } from '@/hooks/use-toast';
-import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import { Search } from 'lucide-react';
+import { fetchExchangeRates, type CurrencyInfo } from '@/utils/currencyApi';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card } from '@/components/ui/card';
 
-interface CurrencyConversion {
-  from: string;
-  to: string;
-  amount: string;
-  result: string;
-  rate: number;
-  timestamp: number;
-}
-
-const RECENT_CURRENCY_KEY = 'converterx_recent_currency';
-
 export default function CurrencyConverter() {
-  const [amount, setAmount] = useState('1');
-  const [fromCurrency, setFromCurrency] = useState('USD');
-  const [toCurrency, setToCurrency] = useState('AZN');
-  const [result, setResult] = useState('');
-  const [exchangeRate, setExchangeRate] = useState<number | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [historicalData, setHistoricalData] = useState<{ date: string; rate: number }[]>([]);
-  const [recentConversions, setRecentConversions] = useState<CurrencyConversion[]>([]);
+  const navigate = useNavigate();
   const [allCurrencies, setAllCurrencies] = useState<CurrencyInfo[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
 
   // Fetch all available currencies on mount
   useEffect(() => {
@@ -54,30 +32,6 @@ export default function CurrencyConverter() {
     
     loadCurrencies();
   }, []);
-
-  useEffect(() => {
-    const stored = localStorage.getItem(RECENT_CURRENCY_KEY);
-    if (stored) {
-      try {
-        setRecentConversions(JSON.parse(stored));
-      } catch (e) {
-        console.error('Failed to load recent conversions:', e);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    loadHistoricalData();
-  }, [fromCurrency, toCurrency]);
-
-  const loadHistoricalData = async () => {
-    try {
-      const data = await fetchHistoricalRates(fromCurrency, toCurrency, 14);
-      setHistoricalData(data);
-    } catch (error) {
-      console.error('Failed to load historical data:', error);
-    }
-  };
   
   // Helper function to get currency name
   const getCurrencyName = (code: string): string => {
@@ -113,306 +67,67 @@ export default function CurrencyConverter() {
     return flags[code] || '🌐';
   };
 
-  const handleConvert = async () => {
-    if (!amount || isNaN(parseFloat(amount))) {
-      toast({ title: 'Please enter a valid amount', variant: 'destructive' });
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const data = await fetchExchangeRates(fromCurrency);
-      const rate = data.rates[toCurrency];
-      
-      if (!rate) {
-        throw new Error('Exchange rate not available');
-      }
-
-      const convertedAmount = parseFloat(amount) * rate;
-      setResult(convertedAmount.toFixed(2));
-      setExchangeRate(rate);
-
-      // Save to recent conversions
-      const newConversion: CurrencyConversion = {
-        from: fromCurrency,
-        to: toCurrency,
-        amount,
-        result: convertedAmount.toFixed(2),
-        rate,
-        timestamp: Date.now(),
-      };
-
-      const updated = [newConversion, ...recentConversions.filter(
-        c => !(c.from === fromCurrency && c.to === toCurrency)
-      )].slice(0, 5);
-
-      setRecentConversions(updated);
-      localStorage.setItem(RECENT_CURRENCY_KEY, JSON.stringify(updated));
-
-      toast({ title: 'Conversion successful!' });
-    } catch (error) {
-      toast({ 
-        title: 'Conversion failed', 
-        description: 'Please try again later',
-        variant: 'destructive' 
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSwap = () => {
-    setFromCurrency(toCurrency);
-    setToCurrency(fromCurrency);
-    setResult('');
-    setExchangeRate(null);
-  };
-
-  const handleCopy = () => {
-    if (result) {
-      navigator.clipboard.writeText(`${amount} ${fromCurrency} = ${result} ${toCurrency}`);
-      toast({ title: 'Copied to clipboard!' });
-    }
-  };
-
   const filteredCurrencies = allCurrencies.filter(currency => 
     currency.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
     currency.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleCurrencySelect = (code: string) => {
-    setSelectedCurrency(code);
-    setFromCurrency(code);
+    navigate(`/currency/${code.toLowerCase()}`);
   };
 
-  // If no currency selected, show the search and list
-  if (!selectedCurrency) {
-    return (
-      <div className="max-w-5xl mx-auto space-y-8 animate-fade-in">
-        {/* Search Section */}
-        <Card className="p-6 rounded-2xl shadow-lg bg-gradient-to-br from-card/80 to-card/50 backdrop-blur-sm border-2">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input
-              type="text"
-              placeholder="Search currencies (e.g., USD, Euro, Dollar...)"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 h-14 text-lg rounded-xl border-2 focus:border-primary transition-all"
-            />
-          </div>
-        </Card>
-
-        {/* Currency List */}
-        <Card className="p-6 rounded-2xl shadow-lg">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold mb-2">All Major Currencies</h2>
-            <p className="text-muted-foreground">
-              {filteredCurrencies.length} {filteredCurrencies.length === 1 ? 'currency' : 'currencies'} available
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[600px] overflow-y-auto pr-2">
-            {filteredCurrencies.map((currency) => (
-              <div
-                key={currency.code}
-                onClick={() => handleCurrencySelect(currency.code)}
-                className="flex items-center gap-3 p-4 rounded-xl transition-all duration-200 cursor-pointer bg-white border border-border hover:scale-[1.02] hover:shadow-md"
-              >
-                <span className="text-2xl">{currency.flag}</span>
-                <div className="flex-1">
-                  <span className="font-bold text-base text-foreground">
-                    {currency.code}
-                  </span>
-                  <span className="text-foreground"> — </span>
-                  <span className="text-sm text-foreground">
-                    {currency.name}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          {filteredCurrencies.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground text-lg">No currencies found matching "{searchQuery}"</p>
-            </div>
-          )}
-        </Card>
-      </div>
-    );
-  }
-
-  // Currency Details Page - shown when a currency is selected
   return (
-    <div className="max-w-7xl mx-auto space-y-6 animate-fade-in">
-      {/* Header */}
-      <div className="text-center space-y-2">
-        <Button
-          variant="ghost"
-          onClick={() => setSelectedCurrency(null)}
-          className="mb-4 hover:bg-primary/10"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to currencies
-        </Button>
-        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#6366F1] to-[#4F46E5] bg-clip-text text-transparent">
-          💰 Currency Converter
-        </h1>
-        <p className="text-lg text-muted-foreground">
-          Real-time exchange rates with clean visuals and instant accuracy
-        </p>
-      </div>
-
-      {/* Main Content - Converter + Chart */}
-      <Card className="p-6 md:p-8 rounded-2xl shadow-xl bg-gradient-to-br from-background to-muted/20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Section - Converter Form */}
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold">
-              {fromCurrency} to {toCurrency}
-            </h2>
-
-            {/* Amount Input */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-muted-foreground">Amount</label>
-              <Input
-                type="number"
-                inputMode="decimal"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="Enter amount"
-                className="h-14 text-2xl font-semibold rounded-xl"
-              />
-            </div>
-
-            {/* Currency Dropdowns with Swap */}
-            <div className="space-y-4">
-              <div className="relative">
-                <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                  <SelectTrigger className="w-full h-14 bg-background rounded-xl text-lg">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-popover z-50 max-h-[300px]">
-                    {allCurrencies.map((c) => (
-                      <SelectItem key={c.code} value={c.code}>
-                        {c.flag} {c.code} — {c.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={handleSwap}
-                  className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-10 w-10 rounded-full bg-background border-2 hover:bg-primary/10 hover:rotate-180 transition-all duration-300 z-10"
-                >
-                  <ArrowLeftRight className="h-5 w-5" />
-                </Button>
-              </div>
-
-              <div className="pt-2">
-                <Select value={toCurrency} onValueChange={setToCurrency}>
-                  <SelectTrigger className="w-full h-14 bg-background rounded-xl text-lg">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-popover z-50 max-h-[300px]">
-                    {allCurrencies.map((c) => (
-                      <SelectItem key={c.code} value={c.code}>
-                        {c.flag} {c.code} — {c.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {/* Convert Button */}
-            <Button
-              onClick={handleConvert}
-              disabled={loading}
-              className="w-full h-14 text-lg font-semibold rounded-xl bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:opacity-90 transition-all hover:shadow-lg hover:scale-[1.02]"
-            >
-              {loading ? 'Converting...' : 'Convert'}
-            </Button>
-
-            {/* Result Display */}
-            {exchangeRate && result && (
-              <div className="p-4 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
-                <p className="text-2xl font-bold text-center">
-                  {amount} {fromCurrency} = {result} {toCurrency}
-                </p>
-                <p className="text-sm text-muted-foreground text-center mt-2">
-                  1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency} (Updated live)
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Right Section - Chart */}
-          <div className="space-y-4">
-            <Card className="p-6 rounded-xl border-2 bg-gradient-to-br from-background to-primary/5">
-              <h3 className="text-xl font-semibold mb-1 text-[#6366F1]">VALUE</h3>
-              <p className="text-xs text-muted-foreground mb-4">
-                Real-time via exchangerate.host
-              </p>
-              
-              {historicalData.length > 0 ? (
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={historicalData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
-                    <XAxis 
-                      dataKey="date" 
-                      stroke="hsl(var(--muted-foreground))"
-                      tick={{ fontSize: 11 }}
-                      tickFormatter={(value) => {
-                        const date = new Date(value);
-                        return `${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
-                      }}
-                    />
-                    <YAxis 
-                      stroke="hsl(var(--muted-foreground))"
-                      tick={{ fontSize: 11 }}
-                      domain={['auto', 'auto']}
-                      tickFormatter={(value) => value.toFixed(2)}
-                    />
-                    <Tooltip 
-                      contentStyle={{
-                        backgroundColor: 'hsl(var(--popover))',
-                        border: '1px solid hsl(var(--border))',
-                        borderRadius: '8px',
-                      }}
-                      formatter={(value: number) => [`${value.toFixed(4)} ${toCurrency}`, 'Rate']}
-                      labelFormatter={(label) => {
-                        const date = new Date(label);
-                        return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-                      }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="rate" 
-                      stroke="#EF4444"
-                      strokeWidth={2}
-                      dot={false}
-                      activeDot={{ r: 6, fill: '#1E293B', stroke: '#EF4444', strokeWidth: 2 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              ) : (
-                <div className="h-[300px] flex items-center justify-center">
-                  <p className="text-muted-foreground">Loading chart data...</p>
-                </div>
-              )}
-            </Card>
-          </div>
+    <div className="max-w-5xl mx-auto space-y-8 animate-fade-in">
+      {/* Search Section */}
+      <Card className="p-6 rounded-2xl shadow-lg bg-gradient-to-br from-card/80 to-card/50 backdrop-blur-sm border-2">
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Input
+            type="text"
+            placeholder="Search currencies (e.g., USD, Euro, Dollar...)"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-12 h-14 text-lg rounded-xl border-2 focus:border-primary transition-all"
+          />
         </div>
       </Card>
 
-      {/* Footer */}
-      <div className="text-center text-sm text-muted-foreground py-4">
-        Exchange data provided by exchangerate.host | ConverterX © 2025
-      </div>
+      {/* Currency List */}
+      <Card className="p-6 rounded-2xl shadow-lg">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold mb-2">All Major Currencies</h2>
+          <p className="text-muted-foreground">
+            {filteredCurrencies.length} {filteredCurrencies.length === 1 ? 'currency' : 'currencies'} available
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[600px] overflow-y-auto pr-2">
+          {filteredCurrencies.map((currency) => (
+            <div
+              key={currency.code}
+              onClick={() => handleCurrencySelect(currency.code)}
+              className="flex items-center gap-3 p-4 rounded-xl transition-all duration-200 cursor-pointer bg-white border border-border hover:scale-[1.02] hover:shadow-md"
+            >
+              <span className="text-2xl">{currency.flag}</span>
+              <div className="flex-1">
+                <span className="font-bold text-base text-foreground">
+                  {currency.code}
+                </span>
+                <span className="text-foreground"> — </span>
+                <span className="text-sm text-foreground">
+                  {currency.name}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        {filteredCurrencies.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground text-lg">No currencies found matching "{searchQuery}"</p>
+          </div>
+        )}
+      </Card>
     </div>
   );
 }
