@@ -58,7 +58,7 @@ export default function Index() {
                           💵 Currency
                         </h3>
                         <p className="text-xs md:text-sm text-muted-foreground mt-1">
-                          Real-time exchange rates
+                          ⚙️ BETA
                         </p>
                       </div>
                     </div>
