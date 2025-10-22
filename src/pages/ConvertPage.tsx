@@ -88,13 +88,13 @@ export default function ConvertPage() {
       
       <Navbar onSearchFocus={() => setSearchOpen(true)} />
       
-      <main className="flex-1 py-4 px-4 flex items-center">
+      <main className="flex-1 py-2 px-4 flex items-center">
         <div className="container mx-auto w-full">
-          <div className="text-center mb-4">
-            <h1 className="text-3xl md:text-4xl font-bold mb-1">
+          <div className="text-center mb-2">
+            <h1 className="text-2xl md:text-3xl font-bold mb-1">
               {category.units[fromUnit!].name} to {category.units[toUnit!].name}
             </h1>
-            <p className="text-sm md:text-base text-muted-foreground">
+            <p className="text-xs md:text-sm text-muted-foreground">
               Convert {category.name.toLowerCase()} instantly
             </p>
           </div>

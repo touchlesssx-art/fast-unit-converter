@@ -16,48 +16,48 @@ export default function Index() {
       <main className="flex-1">
         {/* Hero Section */}
         <section 
-          className="relative py-16 px-4 overflow-hidden min-h-[60vh] flex items-center"
+          className="relative py-8 md:py-12 px-4 overflow-hidden min-h-[60vh] flex items-center"
           style={{
             background: 'linear-gradient(180deg, #f8faff 0%, #e9edff 100%)',
           }}
         >
           <div className="container mx-auto relative z-10">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-primary bg-clip-text text-transparent animate-fade-in">
+              <h1 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-primary bg-clip-text text-transparent animate-fade-in">
                 ConverterX
               </h1>
-              <p className="text-xl md:text-2xl text-foreground mb-2 font-semibold animate-fade-in" style={{ animationDelay: '0.1s' }}>
+              <p className="text-lg md:text-xl text-foreground mb-1 font-semibold animate-fade-in" style={{ animationDelay: '0.1s' }}>
                 Convert anything. Instantly.
               </p>
-              <p className="text-base text-muted-foreground mb-12 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+              <p className="text-sm md:text-base text-muted-foreground mb-6 md:mb-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
                 Fast, accurate, mobile-friendly converter for all your needs.
               </p>
               
               {/* Category Cards */}
-              <div className="mt-12">
-                <h2 className="text-2xl md:text-3xl font-bold mb-8 text-foreground animate-fade-in" style={{ animationDelay: '0.3s' }}>
+              <div className="mt-6 md:mt-8">
+                <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-foreground animate-fade-in" style={{ animationDelay: '0.3s' }}>
                   Choose a Category
                 </h2>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
                   {/* Currency Card */}
                   <button
                     onClick={() => navigate('/category/currency')}
-                    className="group relative overflow-hidden bg-gradient-to-br from-primary/5 to-primary/10 hover:from-primary/10 hover:to-primary/20 rounded-2xl p-8 md:p-10 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in border border-primary/20 hover:border-primary/40"
+                    className="group relative overflow-hidden bg-gradient-to-br from-primary/5 to-primary/10 hover:from-primary/10 hover:to-primary/20 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in border border-primary/20 hover:border-primary/40"
                     style={{ animationDelay: '0.4s' }}
                   >
                     {/* Glow Effect */}
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/20 via-transparent to-transparent blur-xl" />
                     
-                    <div className="relative z-10 flex flex-col items-center gap-4">
-                      <div className="p-4 bg-primary/10 rounded-2xl group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110">
-                        <DollarSign className="h-12 w-12 text-primary" />
+                    <div className="relative z-10 flex flex-col items-center gap-3">
+                      <div className="p-3 bg-primary/10 rounded-2xl group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110">
+                        <DollarSign className="h-10 w-10 md:h-12 md:w-12 text-primary" />
                       </div>
                       <div>
-                        <h3 className="text-2xl md:text-3xl font-bold text-foreground group-hover:text-primary transition-colors">
+                        <h3 className="text-xl md:text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
                           💵 Currency
                         </h3>
-                        <p className="text-sm text-muted-foreground mt-2">
+                        <p className="text-xs md:text-sm text-muted-foreground mt-1">
                           Real-time exchange rates
                         </p>
                       </div>
@@ -67,21 +67,21 @@ export default function Index() {
                   {/* Unit Card */}
                   <button
                     onClick={() => navigate('/units')}
-                    className="group relative overflow-hidden bg-gradient-to-br from-secondary/5 to-secondary/10 hover:from-secondary/10 hover:to-secondary/20 rounded-2xl p-8 md:p-10 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in border border-secondary/20 hover:border-secondary/40"
+                    className="group relative overflow-hidden bg-gradient-to-br from-secondary/5 to-secondary/10 hover:from-secondary/10 hover:to-secondary/20 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in border border-secondary/20 hover:border-secondary/40"
                     style={{ animationDelay: '0.5s' }}
                   >
                     {/* Glow Effect */}
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-secondary/20 via-transparent to-transparent blur-xl" />
                     
-                    <div className="relative z-10 flex flex-col items-center gap-4">
-                      <div className="p-4 bg-secondary/10 rounded-2xl group-hover:bg-secondary/20 transition-all duration-300 group-hover:scale-110">
-                        <Ruler className="h-12 w-12 text-secondary-foreground" />
+                    <div className="relative z-10 flex flex-col items-center gap-3">
+                      <div className="p-3 bg-secondary/10 rounded-2xl group-hover:bg-secondary/20 transition-all duration-300 group-hover:scale-110">
+                        <Ruler className="h-10 w-10 md:h-12 md:w-12 text-secondary-foreground" />
                       </div>
                       <div>
-                        <h3 className="text-2xl md:text-3xl font-bold text-foreground group-hover:text-secondary-foreground transition-colors">
+                        <h3 className="text-xl md:text-2xl font-bold text-foreground group-hover:text-secondary-foreground transition-colors">
                           📏 Unit
                         </h3>
-                        <p className="text-sm text-muted-foreground mt-2">
+                        <p className="text-xs md:text-sm text-muted-foreground mt-1">
                           Length, weight, volume & more
                         </p>
                       </div>

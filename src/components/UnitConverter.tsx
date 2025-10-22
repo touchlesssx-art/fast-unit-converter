@@ -113,39 +113,39 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
   
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <div className="bg-card rounded-2xl shadow-lg p-4 md:p-6 space-y-4">
+      <div className="bg-card rounded-2xl shadow-lg p-3 md:p-5 space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl md:text-2xl font-bold">{category.name} Converter</h2>
+          <h2 className="text-lg md:text-xl font-bold">{category.name} Converter</h2>
           <Button
             variant="ghost"
             size="icon"
             onClick={handleFavoriteToggle}
             className={favorite ? 'text-yellow-500' : ''}
           >
-            <Star className="h-5 w-5" fill={favorite ? 'currentColor' : 'none'} />
+            <Star className="h-4 w-4 md:h-5 md:w-5" fill={favorite ? 'currentColor' : 'none'} />
           </Button>
         </div>
         
         {/* From Unit */}
         <div className="space-y-1">
-          <label className="text-sm font-medium">From</label>
-          <div className="flex gap-3">
+          <label className="text-xs md:text-sm font-medium">From</label>
+          <div className="flex gap-2 md:gap-3">
             <Input
               type="tel"
               inputMode="decimal"
               pattern="[0-9]*"
               value={fromValue}
               onChange={handleFromValueChange}
-              className="flex-1 text-base md:text-lg"
+              className="flex-1 text-sm md:text-base h-10 md:h-11"
               placeholder="Enter value"
             />
             <Select value={fromUnit} onValueChange={setFromUnit}>
-              <SelectTrigger className="w-40">
+              <SelectTrigger className="w-32 md:w-40 h-10 md:h-11 text-sm md:text-base">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-popover">
+              <SelectContent className="bg-popover max-h-[200px] md:max-h-[300px]">
                 {units.map(unit => (
-                  <SelectItem key={unit} value={unit}>
+                  <SelectItem key={unit} value={unit} className="text-sm">
                     {category.units[unit].name}
                   </SelectItem>
                 ))}
@@ -155,37 +155,37 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
         </div>
         
         {/* Swap Button */}
-        <div className="flex justify-center">
+        <div className="flex justify-center -my-1">
           <Button
             variant="outline"
             size="icon"
             onClick={handleSwap}
-            className="rounded-full hover:bg-primary hover:text-primary-foreground transition-all"
+            className="h-8 w-8 md:h-9 md:w-9 rounded-full hover:bg-primary hover:text-primary-foreground transition-all"
           >
-            <ArrowLeftRight className="h-5 w-5" />
+            <ArrowLeftRight className="h-4 w-4 md:h-5 md:w-5" />
           </Button>
         </div>
         
         {/* To Unit */}
         <div className="space-y-1">
-          <label className="text-sm font-medium">To</label>
-          <div className="flex gap-3">
+          <label className="text-xs md:text-sm font-medium">To</label>
+          <div className="flex gap-2 md:gap-3">
             <Input
               type="tel"
               inputMode="decimal"
               pattern="[0-9]*"
               value={toValue}
               onChange={handleToValueChange}
-              className="flex-1 text-base md:text-lg"
+              className="flex-1 text-sm md:text-base h-10 md:h-11"
               placeholder="Result"
             />
             <Select value={toUnit} onValueChange={setToUnit}>
-              <SelectTrigger className="w-40">
+              <SelectTrigger className="w-32 md:w-40 h-10 md:h-11 text-sm md:text-base">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-popover">
+              <SelectContent className="bg-popover max-h-[200px] md:max-h-[300px]">
                 {units.map(unit => (
-                  <SelectItem key={unit} value={unit}>
+                  <SelectItem key={unit} value={unit} className="text-sm">
                     {category.units[unit].name}
                   </SelectItem>
                 ))}
@@ -197,17 +197,17 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
         {/* Copy Button */}
         <Button
           onClick={handleCopy}
-          className="w-full"
+          className="w-full h-10 md:h-11 text-sm md:text-base"
           disabled={!toValue}
         >
           {copied ? (
             <>
-              <Check className="mr-2 h-4 w-4" />
+              <Check className="mr-2 h-3 w-3 md:h-4 md:w-4" />
               Copied!
             </>
           ) : (
             <>
-              <Copy className="mr-2 h-4 w-4" />
+              <Copy className="mr-2 h-3 w-3 md:h-4 md:w-4" />
               Copy Result
             </>
           )}
