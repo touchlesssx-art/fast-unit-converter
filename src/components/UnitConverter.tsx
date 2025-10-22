@@ -113,9 +113,9 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
   
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <div className="bg-card rounded-2xl shadow-lg p-6 space-y-6">
+      <div className="bg-card rounded-2xl shadow-lg p-4 md:p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold">{category.name} Converter</h2>
+          <h2 className="text-xl md:text-2xl font-bold">{category.name} Converter</h2>
           <Button
             variant="ghost"
             size="icon"
@@ -127,7 +127,7 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
         </div>
         
         {/* From Unit */}
-        <div className="space-y-2">
+        <div className="space-y-1">
           <label className="text-sm font-medium">From</label>
           <div className="flex gap-3">
             <Input
@@ -136,7 +136,7 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
               pattern="[0-9]*"
               value={fromValue}
               onChange={handleFromValueChange}
-              className="flex-1 text-lg"
+              className="flex-1 text-base md:text-lg"
               placeholder="Enter value"
             />
             <Select value={fromUnit} onValueChange={setFromUnit}>
@@ -167,7 +167,7 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
         </div>
         
         {/* To Unit */}
-        <div className="space-y-2">
+        <div className="space-y-1">
           <label className="text-sm font-medium">To</label>
           <div className="flex gap-3">
             <Input
@@ -176,7 +176,7 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
               pattern="[0-9]*"
               value={toValue}
               onChange={handleToValueChange}
-              className="flex-1 text-lg"
+              className="flex-1 text-base md:text-lg"
               placeholder="Result"
             />
             <Select value={toUnit} onValueChange={setToUnit}>

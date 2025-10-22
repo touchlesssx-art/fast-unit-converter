@@ -88,13 +88,13 @@ export default function ConvertPage() {
       
       <Navbar onSearchFocus={() => setSearchOpen(true)} />
       
-      <main className="flex-1 py-12 px-4">
-        <div className="container mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-2">
+      <main className="flex-1 py-4 px-4 flex items-center">
+        <div className="container mx-auto w-full">
+          <div className="text-center mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold mb-1">
               {category.units[fromUnit!].name} to {category.units[toUnit!].name}
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-sm md:text-base text-muted-foreground">
               Convert {category.name.toLowerCase()} instantly
             </p>
           </div>
@@ -107,7 +107,7 @@ export default function ConvertPage() {
           
           {/* FAQ Section if available */}
           {pairData?.faq && (
-            <div className="max-w-2xl mx-auto mt-12">
+            <div className="max-w-2xl mx-auto mt-6">
               <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
               <div className="space-y-4">
                 {pairData.faq.map((faq, idx) => (

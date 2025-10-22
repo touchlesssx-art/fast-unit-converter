@@ -124,8 +124,8 @@ export default function CurrencyConversionPage() {
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-muted/20">
         <Navbar />
         
-        <main className="flex-1 container mx-auto px-4 py-8">
-          <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
+        <main className="flex-1 container mx-auto px-4 py-4 flex items-center">
+          <div className="max-w-7xl mx-auto w-full space-y-4 animate-fade-in">
             {/* Back Button */}
             <Button
               variant="ghost"
@@ -137,23 +137,23 @@ export default function CurrencyConversionPage() {
             </Button>
 
             {/* Header */}
-            <div className="text-center space-y-2">
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#6366F1] to-[#4F46E5] bg-clip-text text-transparent">
+            <div className="text-center space-y-1">
+              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#6366F1] to-[#4F46E5] bg-clip-text text-transparent">
                 💸 {fromCurrency} to {toCurrency}
               </h1>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-sm md:text-base text-muted-foreground">
                 Real-time exchange rates with clean visuals and instant accuracy
               </p>
             </div>
 
             {/* Main Content */}
-            <Card className="p-6 md:p-8 rounded-2xl shadow-xl bg-gradient-to-br from-background to-muted/20 max-w-2xl mx-auto">
+            <Card className="p-4 md:p-6 rounded-2xl shadow-xl bg-gradient-to-br from-background to-muted/20 max-w-2xl mx-auto">
               {/* Converter Form */}
-              <div className="space-y-6">
-                <h2 className="text-3xl font-bold">{fromCurrency} to {toCurrency}</h2>
+              <div className="space-y-4">
+                <h2 className="text-2xl md:text-3xl font-bold">{fromCurrency} to {toCurrency}</h2>
 
                 {/* Amount Input */}
-                <div className="space-y-2">
+                <div className="space-y-1">
                   <label className="text-sm font-medium text-muted-foreground">Amount</label>
                   <Input
                     type="number"
@@ -161,15 +161,15 @@ export default function CurrencyConversionPage() {
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="Enter amount"
-                    className="h-14 text-2xl font-semibold rounded-xl"
+                    className="h-12 text-xl font-semibold rounded-xl"
                   />
                 </div>
 
                 {/* Currency Dropdowns with Swap */}
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <div className="relative">
                     <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                      <SelectTrigger className="w-full h-14 bg-background rounded-xl text-lg">
+                      <SelectTrigger className="w-full h-12 bg-background rounded-xl text-base">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-popover z-50 max-h-[300px]">
@@ -191,9 +191,9 @@ export default function CurrencyConversionPage() {
                     </Button>
                   </div>
 
-                  <div className="pt-2">
+                  <div className="pt-1">
                     <Select value={toCurrency} onValueChange={setToCurrency}>
-                      <SelectTrigger className="w-full h-14 bg-background rounded-xl text-lg">
+                      <SelectTrigger className="w-full h-12 bg-background rounded-xl text-base">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-popover z-50 max-h-[300px]">
@@ -211,15 +211,15 @@ export default function CurrencyConversionPage() {
                 <Button
                   onClick={handleConvert}
                   disabled={loading}
-                  className="w-full h-14 text-lg font-semibold rounded-xl bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:opacity-90 transition-all hover:shadow-lg hover:scale-[1.02]"
+                  className="w-full h-12 text-base font-semibold rounded-xl bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:opacity-90 transition-all hover:shadow-lg hover:scale-[1.02]"
                 >
                   {loading ? 'Converting...' : 'Convert'}
                 </Button>
 
                 {/* Result Display */}
                 {exchangeRate && result && (
-                  <div className="p-4 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
-                    <p className="text-2xl font-bold text-center">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
+                    <p className="text-xl font-bold text-center">
                       {amount} {fromCurrency} = {result} {toCurrency}
                     </p>
                     <p className="text-sm text-muted-foreground text-center mt-2">
@@ -231,7 +231,7 @@ export default function CurrencyConversionPage() {
             </Card>
 
             {/* Footer */}
-            <div className="text-center text-sm text-muted-foreground py-4">
+            <div className="text-center text-xs md:text-sm text-muted-foreground py-2">
               Exchange data provided by exchangerate.host | ConverterX © 2025
             </div>
           </div>
