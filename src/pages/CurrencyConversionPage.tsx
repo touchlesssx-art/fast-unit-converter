@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeftRight, ArrowLeft } from 'lucide-react';
-import { fetchExchangeRates, fetchHistoricalRates, type CurrencyInfo } from '@/utils/currencyApi';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
+import { fetchExchangeRates, type CurrencyInfo } from '@/utils/currencyApi';
 import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,9 +21,7 @@ export default function CurrencyConversionPage() {
   const [result, setResult] = useState('');
   const [exchangeRate, setExchangeRate] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
-  const [historicalData, setHistoricalData] = useState<{ date: string; rate: number }[]>([]);
   const [allCurrencies, setAllCurrencies] = useState<CurrencyInfo[]>([]);
-  const [averageRate, setAverageRate] = useState<number | null>(null);
 
   // Fetch all available currencies on mount
   useEffect(() => {
@@ -49,24 +46,8 @@ export default function CurrencyConversionPage() {
   }, []);
 
   useEffect(() => {
-    loadHistoricalData();
     handleConvert();
   }, [fromCurrency, toCurrency]);
-
-  const loadHistoricalData = async () => {
-    try {
-      const data = await fetchHistoricalRates(fromCurrency, toCurrency, 14);
-      setHistoricalData(data);
-      
-      // Calculate average rate
-      if (data.length > 0) {
-        const avg = data.reduce((sum, item) => sum + item.rate, 0) / data.length;
-        setAverageRate(avg);
-      }
-    } catch (error) {
-      console.error('Failed to load historical data:', error);
-    }
-  };
 
   const getCurrencyName = (code: string): string => {
     const names: Record<string, string> = {
@@ -166,153 +147,86 @@ export default function CurrencyConversionPage() {
             </div>
 
             {/* Main Content */}
-            <Card className="p-6 md:p-8 rounded-2xl shadow-xl bg-gradient-to-br from-background to-muted/20">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Left Section - Converter Form */}
-                <div className="space-y-6">
-                  <h2 className="text-3xl font-bold">{fromCurrency} to {toCurrency}</h2>
+            <Card className="p-6 md:p-8 rounded-2xl shadow-xl bg-gradient-to-br from-background to-muted/20 max-w-2xl mx-auto">
+              {/* Converter Form */}
+              <div className="space-y-6">
+                <h2 className="text-3xl font-bold">{fromCurrency} to {toCurrency}</h2>
 
-                  {/* Amount Input */}
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-muted-foreground">Amount</label>
-                    <Input
-                      type="number"
-                      inputMode="decimal"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      placeholder="Enter amount"
-                      className="h-14 text-2xl font-semibold rounded-xl"
-                    />
-                  </div>
-
-                  {/* Currency Dropdowns with Swap */}
-                  <div className="space-y-4">
-                    <div className="relative">
-                      <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                        <SelectTrigger className="w-full h-14 bg-background rounded-xl text-lg">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-popover z-50 max-h-[300px]">
-                          {allCurrencies.map((c) => (
-                            <SelectItem key={c.code} value={c.code}>
-                              {c.flag} {c.code} — {c.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={handleSwap}
-                        className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-10 w-10 rounded-full bg-background border-2 hover:bg-primary/10 hover:rotate-180 transition-all duration-300 z-10"
-                      >
-                        <ArrowLeftRight className="h-5 w-5" />
-                      </Button>
-                    </div>
-
-                    <div className="pt-2">
-                      <Select value={toCurrency} onValueChange={setToCurrency}>
-                        <SelectTrigger className="w-full h-14 bg-background rounded-xl text-lg">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-popover z-50 max-h-[300px]">
-                          {allCurrencies.map((c) => (
-                            <SelectItem key={c.code} value={c.code}>
-                              {c.flag} {c.code} — {c.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  {/* Convert Button */}
-                  <Button
-                    onClick={handleConvert}
-                    disabled={loading}
-                    className="w-full h-14 text-lg font-semibold rounded-xl bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:opacity-90 transition-all hover:shadow-lg hover:scale-[1.02]"
-                  >
-                    {loading ? 'Converting...' : 'Convert'}
-                  </Button>
-
-                  {/* Result Display */}
-                  {exchangeRate && result && (
-                    <div className="p-4 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
-                      <p className="text-2xl font-bold text-center">
-                        {amount} {fromCurrency} = {result} {toCurrency}
-                      </p>
-                      <p className="text-sm text-muted-foreground text-center mt-2">
-                        1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency} (Updated live)
-                      </p>
-                    </div>
-                  )}
+                {/* Amount Input */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-muted-foreground">Amount</label>
+                  <Input
+                    type="number"
+                    inputMode="decimal"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="Enter amount"
+                    className="h-14 text-2xl font-semibold rounded-xl"
+                  />
                 </div>
 
-                {/* Right Section - Graph */}
+                {/* Currency Dropdowns with Swap */}
                 <div className="space-y-4">
-                  <Card className="p-6 rounded-xl border-2 bg-gradient-to-br from-background to-primary/5">
-                    <h3 className="text-xl font-semibold mb-1 text-[#6366F1]">VALUE</h3>
-                    <p className="text-xs text-muted-foreground mb-4">
-                      Realtime via exchangerate.host
-                    </p>
-                    
-                    {historicalData.length > 0 ? (
-                      <ResponsiveContainer width="100%" height={300}>
-                        <LineChart data={historicalData}>
-                          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
-                          <XAxis 
-                            dataKey="date" 
-                            stroke="hsl(var(--muted-foreground))"
-                            tick={{ fontSize: 11 }}
-                            tickFormatter={(value) => {
-                              const date = new Date(value);
-                              return `${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
-                            }}
-                          />
-                          <YAxis 
-                            stroke="hsl(var(--muted-foreground))"
-                            tick={{ fontSize: 11 }}
-                            domain={['auto', 'auto']}
-                            tickFormatter={(value) => value.toFixed(2)}
-                          />
-                          <Tooltip 
-                            contentStyle={{
-                              backgroundColor: 'hsl(var(--popover))',
-                              border: '1px solid hsl(var(--border))',
-                              borderRadius: '8px',
-                            }}
-                            formatter={(value: number) => [`${value.toFixed(4)} ${toCurrency}`, 'Rate']}
-                            labelFormatter={(label) => {
-                              const date = new Date(label);
-                              return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-                            }}
-                          />
-                          {averageRate && (
-                            <ReferenceLine 
-                              y={averageRate} 
-                              stroke="#EF4444" 
-                              strokeWidth={2}
-                              strokeDasharray="0"
-                            />
-                          )}
-                          <Line 
-                            type="monotone" 
-                            dataKey="rate" 
-                            stroke="#3B82F6"
-                            strokeWidth={2}
-                            dot={{ r: 4, fill: '#3B82F6' }}
-                            activeDot={{ r: 6, fill: '#1E293B', stroke: '#3B82F6', strokeWidth: 2 }}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    ) : (
-                      <div className="h-[300px] flex items-center justify-center">
-                        <p className="text-muted-foreground">Loading chart data...</p>
-                      </div>
-                    )}
-                  </Card>
+                  <div className="relative">
+                    <Select value={fromCurrency} onValueChange={setFromCurrency}>
+                      <SelectTrigger className="w-full h-14 bg-background rounded-xl text-lg">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-popover z-50 max-h-[300px]">
+                        {allCurrencies.map((c) => (
+                          <SelectItem key={c.code} value={c.code}>
+                            {c.flag} {c.code} — {c.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={handleSwap}
+                      className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-10 w-10 rounded-full bg-background border-2 hover:bg-primary/10 hover:rotate-180 transition-all duration-300 z-10"
+                    >
+                      <ArrowLeftRight className="h-5 w-5" />
+                    </Button>
+                  </div>
+
+                  <div className="pt-2">
+                    <Select value={toCurrency} onValueChange={setToCurrency}>
+                      <SelectTrigger className="w-full h-14 bg-background rounded-xl text-lg">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-popover z-50 max-h-[300px]">
+                        {allCurrencies.map((c) => (
+                          <SelectItem key={c.code} value={c.code}>
+                            {c.flag} {c.code} — {c.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
+
+                {/* Convert Button */}
+                <Button
+                  onClick={handleConvert}
+                  disabled={loading}
+                  className="w-full h-14 text-lg font-semibold rounded-xl bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:opacity-90 transition-all hover:shadow-lg hover:scale-[1.02]"
+                >
+                  {loading ? 'Converting...' : 'Convert'}
+                </Button>
+
+                {/* Result Display */}
+                {exchangeRate && result && (
+                  <div className="p-4 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
+                    <p className="text-2xl font-bold text-center">
+                      {amount} {fromCurrency} = {result} {toCurrency}
+                    </p>
+                    <p className="text-sm text-muted-foreground text-center mt-2">
+                      1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency} (Updated live)
+                    </p>
+                  </div>
+                )}
               </div>
             </Card>
 
