@@ -27,6 +27,7 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
   const [toValue, setToValue] = useState('');
   const [copied, setCopied] = useState(false);
   const [favorite, setFavorite] = useState(false);
+  const [rotated, setRotated] = useState(false);
   
   useEffect(() => {
     setFavorite(isFavorite(fromUnit, toUnit, categoryId));
@@ -57,6 +58,7 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
     setFromUnit(toUnit);
     setToUnit(fromUnit);
     setFromValue(toValue);
+    setRotated(!rotated);
     trackSwap(categoryId);
   };
   
@@ -162,7 +164,7 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
             onClick={handleSwap}
             className="h-8 w-8 md:h-9 md:w-9 rounded-full hover:bg-primary hover:text-primary-foreground transition-all"
           >
-            <ArrowLeftRight className="h-4 w-4 md:h-5 md:w-5" />
+            <ArrowLeftRight className={`h-4 w-4 md:h-5 md:w-5 transition-transform duration-300 ${rotated ? 'rotate-180' : ''}`} />
           </Button>
         </div>
         
