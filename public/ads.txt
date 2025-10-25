@@ -1,2 +1,1 @@
-# ads.txt placeholder
-# Add your ad network entries here when ready
+google.com, pub-1578209603604474, DIRECT, f08c47fec0942fa0
