@@ -78,3 +78,27 @@
     gap: 10px;
   }
 }
+/* === FIX: Center the convert (↔️) icon on mobile === */
+@media (max-width: 768px) {
+  .swap-icon, .exchange-btn, .convert-switch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px auto;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+  /* əgər aradakı input-container flex strukturundadısa */
+  .converter, .converter-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  input, select {
+    width: 100%;
+  }
+}
