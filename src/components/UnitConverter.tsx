@@ -115,9 +115,9 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
   
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <div className="bg-card rounded-2xl shadow-lg p-3 md:p-5 space-y-3">
+      <div className="bg-card rounded-2xl shadow-lg p-4 md:p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg md:text-xl font-bold">{category.name} Converter</h2>
+          <h2 className="text-lg md:text-xl font-bold text-center flex-1">{category.name} Converter</h2>
           <Button
             variant="ghost"
             size="icon"
@@ -129,8 +129,8 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
         </div>
         
         {/* From Unit */}
-        <div className="space-y-1">
-          <label className="text-xs md:text-sm font-medium">From</label>
+        <div className="space-y-2">
+          <label className="text-xs md:text-sm font-medium block text-center">From</label>
           <div className="flex gap-2 md:gap-3">
             <Input
               type="tel"
@@ -138,11 +138,11 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
               pattern="[0-9]*"
               value={fromValue}
               onChange={handleFromValueChange}
-              className="flex-1 text-sm md:text-base h-10 md:h-11"
+              className="flex-1 text-sm md:text-base h-11 md:h-12 text-center"
               placeholder="Enter value"
             />
             <Select value={fromUnit} onValueChange={setFromUnit}>
-              <SelectTrigger className="w-32 md:w-40 h-10 md:h-11 text-sm md:text-base">
+              <SelectTrigger className="w-32 md:w-40 h-11 md:h-12 text-sm md:text-base">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-popover max-h-[200px] md:max-h-[300px]">
@@ -157,20 +157,20 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
         </div>
         
         {/* Swap Button */}
-        <div className="flex justify-center -my-1">
+        <div className="flex justify-center -my-1.5">
           <Button
             variant="outline"
             size="icon"
             onClick={handleSwap}
-            className="h-8 w-8 md:h-9 md:w-9 rounded-full hover:bg-primary hover:text-primary-foreground transition-all"
+            className="h-9 w-9 md:h-10 md:w-10 rounded-full hover:bg-primary hover:text-primary-foreground transition-all shadow-sm"
           >
-            <ArrowLeftRight className={`h-4 w-4 md:h-5 md:w-5 transition-transform duration-300 ${rotated ? 'rotate-180' : ''}`} />
+            <ArrowLeftRight className={`h-3.5 w-3.5 md:h-5 md:w-5 transition-transform duration-300 ${rotated ? 'rotate-180' : ''}`} />
           </Button>
         </div>
         
         {/* To Unit */}
-        <div className="space-y-1">
-          <label className="text-xs md:text-sm font-medium">To</label>
+        <div className="space-y-2">
+          <label className="text-xs md:text-sm font-medium block text-center">To</label>
           <div className="flex gap-2 md:gap-3">
             <Input
               type="tel"
@@ -178,11 +178,11 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
               pattern="[0-9]*"
               value={toValue}
               onChange={handleToValueChange}
-              className="flex-1 text-sm md:text-base h-10 md:h-11"
+              className="flex-1 text-sm md:text-base h-11 md:h-12 text-center"
               placeholder="Result"
             />
             <Select value={toUnit} onValueChange={setToUnit}>
-              <SelectTrigger className="w-32 md:w-40 h-10 md:h-11 text-sm md:text-base">
+              <SelectTrigger className="w-32 md:w-40 h-11 md:h-12 text-sm md:text-base">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-popover max-h-[200px] md:max-h-[300px]">
@@ -199,17 +199,17 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
         {/* Copy Button */}
         <Button
           onClick={handleCopy}
-          className="w-full h-10 md:h-11 text-sm md:text-base"
+          className="w-full h-11 md:h-12 text-sm md:text-base"
           disabled={!toValue}
         >
           {copied ? (
             <>
-              <Check className="mr-2 h-3 w-3 md:h-4 md:w-4" />
+              <Check className="mr-2 h-3.5 w-3.5 md:h-4 md:w-4" />
               Copied!
             </>
           ) : (
             <>
-              <Copy className="mr-2 h-3 w-3 md:h-4 md:w-4" />
+              <Copy className="mr-2 h-3.5 w-3.5 md:h-4 md:w-4" />
               Copy Result
             </>
           )}

@@ -149,28 +149,28 @@ export default function CurrencyConversionPage() {
             </div>
 
             {/* Main Content */}
-            <Card className="p-3 md:p-5 rounded-2xl shadow-xl bg-gradient-to-br from-background to-muted/20 max-w-2xl mx-auto">
+            <Card className="p-4 md:p-6 rounded-2xl shadow-xl bg-gradient-to-br from-background to-muted/20 max-w-2xl mx-auto">
               {/* Converter Form */}
-              <div className="space-y-3">
-                <h2 className="text-xl md:text-2xl font-bold">{fromCurrency} to {toCurrency}</h2>
+              <div className="space-y-4">
+                <h2 className="text-xl md:text-2xl font-bold text-center">{fromCurrency} to {toCurrency}</h2>
 
                 {/* Amount Input */}
-                <div className="space-y-1">
-                  <label className="text-xs md:text-sm font-medium text-muted-foreground">Amount</label>
+                <div className="space-y-2">
+                  <label className="text-xs md:text-sm font-medium text-muted-foreground block text-center">Amount</label>
                   <Input
                     type="number"
                     inputMode="decimal"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="Enter amount"
-                    className="h-10 md:h-12 text-lg md:text-xl font-semibold rounded-xl"
+                    className="h-11 md:h-12 text-lg md:text-xl font-semibold rounded-xl text-center"
                   />
                 </div>
 
                 {/* Currency Dropdowns with Swap */}
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                    <SelectTrigger className="w-full h-10 md:h-12 bg-background rounded-xl text-sm md:text-base">
+                    <SelectTrigger className="w-full h-11 md:h-12 bg-background rounded-xl text-sm md:text-base">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-popover z-50 max-h-[200px] md:max-h-[300px]">
@@ -182,19 +182,19 @@ export default function CurrencyConversionPage() {
                     </SelectContent>
                   </Select>
 
-                  <div className="flex justify-center -my-1">
+                  <div className="flex justify-center -my-1.5">
                     <Button
                       variant="outline"
                       size="icon"
                       onClick={handleSwap}
-                      className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-background border-2 hover:bg-primary/10 hover:rotate-180 transition-all duration-300"
+                      className="h-9 w-9 md:h-10 md:w-10 rounded-full bg-background border-2 hover:bg-primary/10 hover:rotate-180 transition-all duration-300 shadow-sm"
                     >
-                      <ArrowLeftRight className="h-4 w-4 md:h-5 md:w-5" />
+                      <ArrowLeftRight className="h-3.5 w-3.5 md:h-5 md:w-5" />
                     </Button>
                   </div>
 
                   <Select value={toCurrency} onValueChange={setToCurrency}>
-                    <SelectTrigger className="w-full h-10 md:h-12 bg-background rounded-xl text-sm md:text-base">
+                    <SelectTrigger className="w-full h-11 md:h-12 bg-background rounded-xl text-sm md:text-base">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-popover z-50 max-h-[200px] md:max-h-[300px]">
@@ -211,18 +211,18 @@ export default function CurrencyConversionPage() {
                 <Button
                   onClick={handleConvert}
                   disabled={loading}
-                  className="w-full h-10 md:h-12 text-sm md:text-base font-semibold rounded-xl bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:opacity-90 transition-all hover:shadow-lg hover:scale-[1.02]"
+                  className="w-full h-11 md:h-12 text-sm md:text-base font-semibold rounded-xl bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:opacity-90 transition-all hover:shadow-lg hover:scale-[1.02]"
                 >
                   {loading ? 'Converting...' : 'Convert'}
                 </Button>
 
                 {/* Result Display */}
                 {exchangeRate && result && (
-                  <div className="p-2.5 md:p-3 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
+                  <div className="p-3 md:p-4 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 mt-2">
                     <p className="text-lg md:text-xl font-bold text-center">
                       {amount} {fromCurrency} = {result} {toCurrency}
                     </p>
-                    <p className="text-xs md:text-sm text-muted-foreground text-center mt-1">
+                    <p className="text-xs md:text-sm text-muted-foreground text-center mt-2">
                       1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency} (Updated live)
                     </p>
                   </div>
