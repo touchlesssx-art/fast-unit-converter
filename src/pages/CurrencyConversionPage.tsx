@@ -169,44 +169,42 @@ export default function CurrencyConversionPage() {
 
                 {/* Currency Dropdowns with Swap */}
                 <div className="space-y-2">
-                  <div className="relative">
-                    <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                      <SelectTrigger className="w-full h-10 md:h-12 bg-background rounded-xl text-sm md:text-base">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-popover z-50 max-h-[200px] md:max-h-[300px]">
-                        {allCurrencies.map((c) => (
-                          <SelectItem key={c.code} value={c.code} className="text-sm">
-                            {c.flag} {c.code} — {c.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                  <Select value={fromCurrency} onValueChange={setFromCurrency}>
+                    <SelectTrigger className="w-full h-10 md:h-12 bg-background rounded-xl text-sm md:text-base">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-popover z-50 max-h-[200px] md:max-h-[300px]">
+                      {allCurrencies.map((c) => (
+                        <SelectItem key={c.code} value={c.code} className="text-sm">
+                          {c.flag} {c.code} — {c.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
+                  <div className="flex justify-center -my-1">
                     <Button
                       variant="outline"
                       size="icon"
                       onClick={handleSwap}
-                      className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 h-8 w-8 md:h-10 md:w-10 rounded-full bg-background border-2 hover:bg-primary/10 hover:rotate-180 transition-all duration-300 z-10"
+                      className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-background border-2 hover:bg-primary/10 hover:rotate-180 transition-all duration-300"
                     >
                       <ArrowLeftRight className="h-4 w-4 md:h-5 md:w-5" />
                     </Button>
                   </div>
 
-                  <div className="pt-0.5">
-                    <Select value={toCurrency} onValueChange={setToCurrency}>
-                      <SelectTrigger className="w-full h-10 md:h-12 bg-background rounded-xl text-sm md:text-base">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-popover z-50 max-h-[200px] md:max-h-[300px]">
-                        {allCurrencies.map((c) => (
-                          <SelectItem key={c.code} value={c.code} className="text-sm">
-                            {c.flag} {c.code} — {c.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  <Select value={toCurrency} onValueChange={setToCurrency}>
+                    <SelectTrigger className="w-full h-10 md:h-12 bg-background rounded-xl text-sm md:text-base">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-popover z-50 max-h-[200px] md:max-h-[300px]">
+                      {allCurrencies.map((c) => (
+                        <SelectItem key={c.code} value={c.code} className="text-sm">
+                          {c.flag} {c.code} — {c.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Convert Button */}
