@@ -24,7 +24,7 @@ export default function Navbar({ onSearchFocus }: NavbarProps) {
               className="w-full flex items-center gap-2 px-4 py-2 bg-muted rounded-2xl text-muted-foreground hover:bg-muted/80 transition-colors"
             >
               <Search className="h-4 w-4" />
-              <span className="text-sm">Search units...</span>
+              <span className="text-sm">Search units & currencies...</span>
             </button>
           </div>
           

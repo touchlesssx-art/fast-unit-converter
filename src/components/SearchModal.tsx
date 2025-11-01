@@ -25,7 +25,11 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
   }, [query]);
   
   const handleResultClick = (result: SearchResult) => {
-    navigate(`/convert/${result.from}-to-${result.to}`);
+    if (result.type === 'currency') {
+      navigate(`/currency/${result.from}`);
+    } else {
+      navigate(`/convert/${result.from}-to-${result.to}`);
+    }
     onClose();
     setQuery('');
   };
@@ -34,12 +38,12 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Search Units</DialogTitle>
+          <DialogTitle>Search Units & Currencies</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4">
           <Input
-            placeholder="Type unit names (e.g., 'kg lb', 'm ft', 'celsius fahrenheit')..."
+            placeholder="Type units (kg, lb, m, ft) or currencies (USD, EUR, GBP)..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
@@ -60,7 +64,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
                         {result.fromName} ⇄ {result.toName}
                       </div>
                       <div className="text-sm text-muted-foreground capitalize">
-                        {result.category}
+                        {result.type === 'currency' ? '💱 Currency' : result.category}
                       </div>
                     </div>
                     <ArrowRight className="h-5 w-5 text-primary" />
@@ -69,11 +73,11 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
               </div>
             ) : query.trim().length >= 2 ? (
               <p className="text-center text-muted-foreground py-8">
-                No units found. Try different keywords.
+                No results found. Try different keywords.
               </p>
             ) : (
               <p className="text-center text-muted-foreground py-8">
-                Start typing to search units...
+                Start typing to search units & currencies...
               </p>
             )}
           </div>
