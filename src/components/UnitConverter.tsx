@@ -162,7 +162,7 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
             variant="outline"
             size="icon"
             onClick={handleSwap}
-            className="h-9 w-9 md:h-10 md:w-10 rounded-full hover:bg-primary hover:text-primary-foreground transition-all shadow-sm"
+            className="h-9 w-9 md:h-10 md:w-10 rounded-full bg-background border-2 hover:bg-primary/10 transition-all shadow-sm"
           >
             <ArrowLeftRight className={`h-3.5 w-3.5 md:h-5 md:w-5 transition-transform duration-300 ${rotated ? 'rotate-180' : ''}`} />
           </Button>

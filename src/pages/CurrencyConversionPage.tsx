@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeftRight, ArrowLeft } from 'lucide-react';
+import { ArrowLeftRight, ArrowLeft, Copy, Check } from 'lucide-react';
 import { fetchExchangeRates, type CurrencyInfo } from '@/utils/currencyApi';
 import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,7 @@ export default function CurrencyConversionPage() {
   const [exchangeRate, setExchangeRate] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [allCurrencies, setAllCurrencies] = useState<CurrencyInfo[]>([]);
+  const [copied, setCopied] = useState(false);
 
   // Fetch all available currencies on mount
   useEffect(() => {
@@ -45,9 +46,10 @@ export default function CurrencyConversionPage() {
     loadCurrencies();
   }, []);
 
+  // Auto-convert when amount or currencies change
   useEffect(() => {
     handleConvert();
-  }, [fromCurrency, toCurrency]);
+  }, [amount, fromCurrency, toCurrency]);
 
   const getCurrencyName = (code: string): string => {
     const names: Record<string, string> = {
@@ -112,6 +114,18 @@ export default function CurrencyConversionPage() {
   const handleSwap = () => {
     setFromCurrency(toCurrency);
     setToCurrency(fromCurrency);
+  };
+
+  const handleCopy = async () => {
+    if (result) {
+      await navigator.clipboard.writeText(result);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+      toast({ 
+        title: 'Copied!', 
+        description: 'Result copied to clipboard' 
+      });
+    }
   };
 
   return (
@@ -207,24 +221,36 @@ export default function CurrencyConversionPage() {
                   </Select>
                 </div>
 
-                {/* Convert Button */}
-                <Button
-                  onClick={handleConvert}
-                  disabled={loading}
-                  className="w-full h-11 md:h-12 text-sm md:text-base font-semibold rounded-xl bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:opacity-90 transition-all hover:shadow-lg hover:scale-[1.02]"
-                >
-                  {loading ? 'Converting...' : 'Convert'}
-                </Button>
-
                 {/* Result Display */}
                 {exchangeRate && result && (
-                  <div className="p-3 md:p-4 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 mt-2">
-                    <p className="text-lg md:text-xl font-bold text-center">
-                      {amount} {fromCurrency} = {result} {toCurrency}
-                    </p>
-                    <p className="text-xs md:text-sm text-muted-foreground text-center mt-2">
-                      1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency} (Updated live)
-                    </p>
+                  <div className="space-y-3">
+                    <div className="p-3 md:p-4 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
+                      <p className="text-lg md:text-xl font-bold text-center">
+                        {amount} {fromCurrency} = {result} {toCurrency}
+                      </p>
+                      <p className="text-xs md:text-sm text-muted-foreground text-center mt-2">
+                        1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency} (Updated live)
+                      </p>
+                    </div>
+                    
+                    {/* Copy Button */}
+                    <Button
+                      onClick={handleCopy}
+                      variant="outline"
+                      className="w-full h-11 md:h-12 text-sm md:text-base font-semibold rounded-xl hover:bg-primary/10 transition-all"
+                    >
+                      {copied ? (
+                        <>
+                          <Check className="h-3.5 w-3.5 md:h-4 md:w-4 mr-2" />
+                          Copied!
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="h-3.5 w-3.5 md:h-4 md:w-4 mr-2" />
+                          Copy Result
+                        </>
+                      )}
+                    </Button>
                   </div>
                 )}
               </div>
