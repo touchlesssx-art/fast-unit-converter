@@ -16,10 +16,14 @@ export default function AdBanner() {
   }, []);
 
   return (
-    <div className="my-8 flex justify-center">
+    <div className="flex justify-center overflow-hidden">
       <ins
         className="adsbygoogle"
-        style={{ display: "block" }}
+        style={{ 
+          display: "block",
+          margin: "0",
+          padding: "0"
+        }}
         data-ad-client="ca-pub-1578209603604474"
         data-ad-slot="9698255604"
         data-ad-format="auto"
