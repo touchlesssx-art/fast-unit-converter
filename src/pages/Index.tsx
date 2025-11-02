@@ -21,8 +21,7 @@ export default function Index() {
 
     const timeout = setTimeout(() => {
       try {
-        (window as any).adsbygoogle = (window as any).adsbygoogle || [];
-        (window as any).adsbygoogle.push({});
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
         // ✨ Add listener for when ad is actually loaded
         const observer = new MutationObserver((mutations) => {
           mutations.forEach((m) => {
