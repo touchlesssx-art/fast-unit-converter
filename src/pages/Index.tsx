@@ -7,9 +7,10 @@ import { DollarSign, Ruler } from 'lucide-react';
 
 export default function Index() {
   const [searchOpen, setSearchOpen] = useState(false);
+  const [adLoaded, setAdLoaded] = useState(false);
   const navigate = useNavigate();
 
-  // ✅ Google AdSense Script Loader (auto show when loaded)
+  // ✅ Google AdSense Lazy Loader
   useEffect(() => {
     const script = document.createElement('script');
     script.async = true;
@@ -18,39 +19,50 @@ export default function Index() {
     script.crossOrigin = 'anonymous';
     document.body.appendChild(script);
 
-    const timer = setTimeout(() => {
+    const timeout = setTimeout(() => {
       try {
-        const ad = document.querySelector('.adsbygoogle');
-        if (ad) ad.style.display = 'block'; // only show when loaded
         (window.adsbygoogle = window.adsbygoogle || []).push({});
+        // ✨ Add listener for when ad is actually loaded
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((m) => {
+            if (m.addedNodes.length > 0) {
+              setAdLoaded(true);
+              observer.disconnect();
+            }
+          });
+        });
+        const adEl = document.querySelector('.adsbygoogle');
+        if (adEl) observer.observe(adEl, { childList: true });
       } catch (e) {
         console.error('AdSense error:', e);
       }
-    }, 2000); // small delay for clean load
+    }, 1000);
 
-    return () => clearTimeout(timer);
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar onSearchFocus={() => setSearchOpen(true)} />
 
-      {/* --- Google AdSense Banner (clean version) --- */}
-      <div className="w-full flex justify-center items-center py-3 bg-transparent">
-        <ins
-          className="adsbygoogle"
-          style={{
-            display: 'none', // 🧠 hidden until loaded
-            textAlign: 'center',
-            width: '100%',
-            maxWidth: '970px',
-          }}
-          data-ad-client="ca-pub-1578209603604474"
-          data-ad-slot="4995210375"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        ></ins>
-      </div>
+      {/* --- Google AdSense Banner --- */}
+      {adLoaded && (
+        <div className="w-full flex justify-center items-center py-3 bg-transparent">
+          <ins
+            className="adsbygoogle"
+            style={{
+              display: 'block',
+              textAlign: 'center',
+              width: '100%',
+              maxWidth: '970px',
+            }}
+            data-ad-client="ca-pub-1578209603604474"
+            data-ad-slot="4995210375"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          ></ins>
+        </div>
+      )}
       {/* --- End of Ad Section --- */}
 
       <main className="flex-1">
