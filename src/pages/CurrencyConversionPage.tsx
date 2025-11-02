@@ -10,11 +10,12 @@ import { Card } from '@/components/ui/card';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Helmet } from 'react-helmet-async';
+import AdBanner from '@/components/AdBanner'; // ✅ Added import
 
 export default function CurrencyConversionPage() {
   const { currency } = useParams<{ currency: string }>();
   const navigate = useNavigate();
-  
+
   const [amount, setAmount] = useState('0');
   const [fromCurrency, setFromCurrency] = useState(currency?.toUpperCase() || 'AZN');
   const [toCurrency, setToCurrency] = useState('USD');
@@ -30,19 +31,21 @@ export default function CurrencyConversionPage() {
       try {
         const data = await fetchExchangeRates('USD');
         const currencyCodes = Object.keys(data.rates);
-        
-        const currencyList: CurrencyInfo[] = currencyCodes.map(code => ({
-          code,
-          name: getCurrencyName(code),
-          flag: getCurrencyFlag(code),
-        })).sort((a, b) => a.code.localeCompare(b.code));
-        
+
+        const currencyList: CurrencyInfo[] = currencyCodes
+          .map((code) => ({
+            code,
+            name: getCurrencyName(code),
+            flag: getCurrencyFlag(code),
+          }))
+          .sort((a, b) => a.code.localeCompare(b.code));
+
         setAllCurrencies(currencyList);
       } catch (error) {
         console.error('Failed to load currencies:', error);
       }
     };
-    
+
     loadCurrencies();
   }, []);
 
@@ -53,32 +56,108 @@ export default function CurrencyConversionPage() {
 
   const getCurrencyName = (code: string): string => {
     const names: Record<string, string> = {
-      USD: 'United States Dollar', EUR: 'Euro', GBP: 'British Pound', AZN: 'Azerbaijani Manat',
-      TRY: 'Turkish Lira', RUB: 'Russian Ruble', JPY: 'Japanese Yen', CNY: 'Chinese Yuan',
-      INR: 'Indian Rupee', AUD: 'Australian Dollar', CAD: 'Canadian Dollar', CHF: 'Swiss Franc',
-      SEK: 'Swedish Krona', NZD: 'New Zealand Dollar', KRW: 'South Korean Won', SGD: 'Singapore Dollar',
-      NOK: 'Norwegian Krone', MXN: 'Mexican Peso', BRL: 'Brazilian Real', ZAR: 'South African Rand',
-      HKD: 'Hong Kong Dollar', PLN: 'Polish Zloty', THB: 'Thai Baht', IDR: 'Indonesian Rupiah',
-      MYR: 'Malaysian Ringgit', PHP: 'Philippine Peso', DKK: 'Danish Krone', CZK: 'Czech Koruna',
-      HUF: 'Hungarian Forint', RON: 'Romanian Leu', ILS: 'Israeli Shekel', AED: 'UAE Dirham',
-      SAR: 'Saudi Riyal', KWD: 'Kuwaiti Dinar', QAR: 'Qatari Riyal', EGP: 'Egyptian Pound',
-      PKR: 'Pakistani Rupee', BDT: 'Bangladeshi Taka', VND: 'Vietnamese Dong', ARS: 'Argentine Peso',
-      CLP: 'Chilean Peso', COP: 'Colombian Peso', PEN: 'Peruvian Sol', UAH: 'Ukrainian Hryvnia',
-      NGN: 'Nigerian Naira', KES: 'Kenyan Shilling', GHS: 'Ghanaian Cedi', MAD: 'Moroccan Dirham',
+      USD: 'United States Dollar',
+      EUR: 'Euro',
+      GBP: 'British Pound',
+      AZN: 'Azerbaijani Manat',
+      TRY: 'Turkish Lira',
+      RUB: 'Russian Ruble',
+      JPY: 'Japanese Yen',
+      CNY: 'Chinese Yuan',
+      INR: 'Indian Rupee',
+      AUD: 'Australian Dollar',
+      CAD: 'Canadian Dollar',
+      CHF: 'Swiss Franc',
+      SEK: 'Swedish Krona',
+      NZD: 'New Zealand Dollar',
+      KRW: 'South Korean Won',
+      SGD: 'Singapore Dollar',
+      NOK: 'Norwegian Krone',
+      MXN: 'Mexican Peso',
+      BRL: 'Brazilian Real',
+      ZAR: 'South African Rand',
+      HKD: 'Hong Kong Dollar',
+      PLN: 'Polish Zloty',
+      THB: 'Thai Baht',
+      IDR: 'Indonesian Rupiah',
+      MYR: 'Malaysian Ringgit',
+      PHP: 'Philippine Peso',
+      DKK: 'Danish Krone',
+      CZK: 'Czech Koruna',
+      HUF: 'Hungarian Forint',
+      RON: 'Romanian Leu',
+      ILS: 'Israeli Shekel',
+      AED: 'UAE Dirham',
+      SAR: 'Saudi Riyal',
+      KWD: 'Kuwaiti Dinar',
+      QAR: 'Qatari Riyal',
+      EGP: 'Egyptian Pound',
+      PKR: 'Pakistani Rupee',
+      BDT: 'Bangladeshi Taka',
+      VND: 'Vietnamese Dong',
+      ARS: 'Argentine Peso',
+      CLP: 'Chilean Peso',
+      COP: 'Colombian Peso',
+      PEN: 'Peruvian Sol',
+      UAH: 'Ukrainian Hryvnia',
+      NGN: 'Nigerian Naira',
+      KES: 'Kenyan Shilling',
+      GHS: 'Ghanaian Cedi',
+      MAD: 'Moroccan Dirham',
     };
     return names[code] || code;
   };
 
   const getCurrencyFlag = (code: string): string => {
     const flags: Record<string, string> = {
-      USD: '🇺🇸', EUR: '🇪🇺', GBP: '🇬🇧', AZN: '🇦🇿', TRY: '🇹🇷', RUB: '🇷🇺',
-      JPY: '🇯🇵', CNY: '🇨🇳', INR: '🇮🇳', AUD: '🇦🇺', CAD: '🇨🇦', CHF: '🇨🇭',
-      SEK: '🇸🇪', NZD: '🇳🇿', KRW: '🇰🇷', SGD: '🇸🇬', NOK: '🇳🇴', MXN: '🇲🇽',
-      BRL: '🇧🇷', ZAR: '🇿🇦', HKD: '🇭🇰', PLN: '🇵🇱', THB: '🇹🇭', IDR: '🇮🇩',
-      MYR: '🇲🇾', PHP: '🇵🇭', DKK: '🇩🇰', CZK: '🇨🇿', HUF: '🇭🇺', RON: '🇷🇴',
-      ILS: '🇮🇱', AED: '🇦🇪', SAR: '🇸🇦', KWD: '🇰🇼', QAR: '🇶🇦', EGP: '🇪🇬',
-      PKR: '🇵🇰', BDT: '🇧🇩', VND: '🇻🇳', ARS: '🇦🇷', CLP: '🇨🇱', COP: '🇨🇴',
-      PEN: '🇵🇪', UAH: '🇺🇦', NGN: '🇳🇬', KES: '🇰🇪', GHS: '🇬🇭', MAD: '🇲🇦',
+      USD: '🇺🇸',
+      EUR: '🇪🇺',
+      GBP: '🇬🇧',
+      AZN: '🇦🇿',
+      TRY: '🇹🇷',
+      RUB: '🇷🇺',
+      JPY: '🇯🇵',
+      CNY: '🇨🇳',
+      INR: '🇮🇳',
+      AUD: '🇦🇺',
+      CAD: '🇨🇦',
+      CHF: '🇨🇭',
+      SEK: '🇸🇪',
+      NZD: '🇳🇿',
+      KRW: '🇰🇷',
+      SGD: '🇸🇬',
+      NOK: '🇳🇴',
+      MXN: '🇲🇽',
+      BRL: '🇧🇷',
+      ZAR: '🇿🇦',
+      HKD: '🇭🇰',
+      PLN: '🇵🇱',
+      THB: '🇹🇭',
+      IDR: '🇮🇩',
+      MYR: '🇲🇾',
+      PHP: '🇵🇭',
+      DKK: '🇩🇰',
+      CZK: '🇨🇿',
+      HUF: '🇭🇺',
+      RON: '🇷🇴',
+      ILS: '🇮🇱',
+      AED: '🇦🇪',
+      SAR: '🇸🇦',
+      KWD: '🇰🇼',
+      QAR: '🇶🇦',
+      EGP: '🇪🇬',
+      PKR: '🇵🇰',
+      BDT: '🇧🇩',
+      VND: '🇻🇳',
+      ARS: '🇦🇷',
+      CLP: '🇨🇱',
+      COP: '🇨🇴',
+      PEN: '🇵🇪',
+      UAH: '🇺🇦',
+      NGN: '🇳🇬',
+      KES: '🇰🇪',
+      GHS: '🇬🇭',
+      MAD: '🇲🇦',
     };
     return flags[code] || '🌐';
   };
@@ -92,7 +171,7 @@ export default function CurrencyConversionPage() {
     try {
       const data = await fetchExchangeRates(fromCurrency);
       const rate = data.rates[toCurrency];
-      
+
       if (!rate) {
         throw new Error('Exchange rate not available');
       }
@@ -101,10 +180,10 @@ export default function CurrencyConversionPage() {
       setResult(convertedAmount.toFixed(2));
       setExchangeRate(rate);
     } catch (error) {
-      toast({ 
-        title: 'Conversion failed', 
+      toast({
+        title: 'Conversion failed',
         description: 'Please try again later',
-        variant: 'destructive' 
+        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -121,9 +200,9 @@ export default function CurrencyConversionPage() {
       await navigator.clipboard.writeText(result);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-      toast({ 
-        title: 'Copied!', 
-        description: 'Result copied to clipboard' 
+      toast({
+        title: 'Copied!',
+        description: 'Result copied to clipboard',
       });
     }
   };
@@ -131,13 +210,21 @@ export default function CurrencyConversionPage() {
   return (
     <>
       <Helmet>
-        <title>{fromCurrency} to {toCurrency} Converter - ConverterX</title>
-        <meta name="description" content={`Convert ${fromCurrency} to ${toCurrency} with real-time exchange rates. Free currency converter with live rates and historical data.`} />
+        <title>
+          {fromCurrency} to {toCurrency} Converter - ConverterX
+        </title>
+        <meta
+          name="description"
+          content={`Convert ${fromCurrency} to ${toCurrency} with real-time exchange rates. Free currency converter with live rates and historical data.`}
+        />
       </Helmet>
 
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-muted/20">
         <Navbar />
-        
+
+        {/* ✅ Google AdSense Banner just below Navbar */}
+        <AdBanner />
+
         <main className="flex-1 container mx-auto px-4 py-1 flex items-center">
           <div className="max-w-2xl mx-auto w-full space-y-1 animate-fade-in">
             {/* Back Button */}
@@ -160,12 +247,12 @@ export default function CurrencyConversionPage() {
 
             {/* Main Content */}
             <Card className="p-3 md:p-4 rounded-2xl shadow-xl bg-gradient-to-br from-background to-muted/20">
-              {/* Converter Form */}
               <div className="space-y-2.5">
-
                 {/* Amount Input */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-muted-foreground block text-center">Amount</label>
+                  <label className="text-xs font-medium text-muted-foreground block text-center">
+                    Amount
+                  </label>
                   <Input
                     type="number"
                     inputMode="decimal"
@@ -178,7 +265,7 @@ export default function CurrencyConversionPage() {
                   />
                 </div>
 
-                {/* Currency Dropdowns with Swap */}
+                {/* Currency Dropdowns */}
                 <div className="space-y-2">
                   <Select value={fromCurrency} onValueChange={setFromCurrency}>
                     <SelectTrigger className="w-full h-10 md:h-11 bg-background rounded-xl text-sm">
@@ -229,7 +316,7 @@ export default function CurrencyConversionPage() {
                         1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}
                       </p>
                     </div>
-                    
+
                     {/* Copy Button */}
                     <Button
                       onClick={handleCopy}
@@ -253,7 +340,6 @@ export default function CurrencyConversionPage() {
               </div>
             </Card>
 
-            {/* Footer */}
             <div className="text-center text-[10px] md:text-xs text-muted-foreground">
               Exchange data by exchangerate.host
             </div>
