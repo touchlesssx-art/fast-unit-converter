@@ -15,7 +15,7 @@ export default function CurrencyConversionPage() {
   const { currency } = useParams<{ currency: string }>();
   const navigate = useNavigate();
   
-  const [amount, setAmount] = useState('1');
+  const [amount, setAmount] = useState('0');
   const [fromCurrency, setFromCurrency] = useState(currency?.toUpperCase() || 'AZN');
   const [toCurrency, setToCurrency] = useState('USD');
   const [result, setResult] = useState('');
@@ -169,9 +169,11 @@ export default function CurrencyConversionPage() {
                   <Input
                     type="number"
                     inputMode="decimal"
-                    value={amount}
+                    value={amount === '0' ? '' : amount}
+                    onFocus={() => amount === '0' && setAmount('')}
+                    onBlur={() => amount === '' && setAmount('0')}
                     onChange={(e) => setAmount(e.target.value)}
-                    placeholder="Enter amount"
+                    placeholder="0"
                     className="h-10 md:h-11 text-base md:text-lg font-semibold rounded-xl text-center"
                   />
                 </div>
