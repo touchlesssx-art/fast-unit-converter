@@ -22,7 +22,8 @@ export default function AdBanner() {
         style={{ 
           display: "block",
           margin: "0",
-          padding: "0"
+          padding: "0",
+          minHeight: "90px"
         }}
         data-ad-client="ca-pub-1578209603604474"
         data-ad-slot="9698255604"
