@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { ArrowLeftRight, Copy, Check } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { categories } from '@/converters/conversionFactors';
+import AdBanner from '@/components/AdBanner'; // ✅ Added import
 
 interface UnitConverterProps {
   categoryId: string;
@@ -49,16 +50,18 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
       toast({
         title: 'Copied!',
         description: 'Result copied to clipboard.',
-        duration: 2000, // 2 saniyəyə avtomatik bağlanacaq ✅
+        duration: 2000,
       });
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto space-y-4">
+      {/* ✅ Google AdSense Banner */}
+      <AdBanner />
+
       <Card className="p-3 md:p-4 rounded-2xl shadow-xl bg-gradient-to-br from-background to-muted/20">
         <div className="space-y-2.5">
-
           {/* Amount Input */}
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground block text-center">From</label>
