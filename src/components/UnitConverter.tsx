@@ -23,7 +23,7 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
   const units = Object.keys(category.units);
   const [fromUnit, setFromUnit] = useState(defaultFrom || units[0]);
   const [toUnit, setToUnit] = useState(defaultTo || units[1]);
-  const [fromValue, setFromValue] = useState('1');
+  const [fromValue, setFromValue] = useState('0'); // ✅ əvvəl 1 idi, indi 0
   const [toValue, setToValue] = useState('');
   const [copied, setCopied] = useState(false);
   const [favorite, setFavorite] = useState(false);
@@ -40,8 +40,6 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
       const to = category.units[toUnit];
       const result = convert(value, from, to);
       setToValue(formatNumber(result));
-      
-      // Save to recent
       addRecentConversion({
         from: fromUnit,
         to: toUnit,
@@ -72,8 +70,8 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
         title: 'Copied!',
         description: `${textToCopy} copied to clipboard`,
       });
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
+      setTimeout(() => setCopied(false), 2000); // ✅ 2 saniyəyə yox olur
+    } catch {
       toast({
         title: 'Failed to copy',
         variant: 'destructive',
@@ -89,10 +87,17 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
       title: newState ? 'Added to favorites' : 'Removed from favorites',
     });
   };
-  
+
+  const handleFromFocus = () => {
+    if (fromValue === '0') setFromValue('');
+  };
+
+  const handleFromBlur = () => {
+    if (fromValue === '') setFromValue('0');
+  };
+
   const handleFromValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // Allow empty, minus, and valid decimal numbers
     if (value === '' || value === '-' || !isNaN(parseFloat(value))) {
       setFromValue(value);
     }
@@ -102,7 +107,6 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
     const value = e.target.value;
     if (value === '' || value === '-' || !isNaN(parseFloat(value))) {
       setToValue(value);
-      // Reverse conversion
       if (value && !isNaN(parseFloat(value))) {
         const val = parseFloat(value);
         const to = category.units[toUnit];
@@ -137,9 +141,11 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
               inputMode="decimal"
               pattern="[0-9]*"
               value={fromValue}
+              onFocus={handleFromFocus}
+              onBlur={handleFromBlur}
               onChange={handleFromValueChange}
               className="flex-1 text-sm md:text-base h-11 md:h-12 text-center"
-              placeholder="Enter value"
+              placeholder="0"
             />
             <Select value={fromUnit} onValueChange={setFromUnit}>
               <SelectTrigger className="w-32 md:w-40 h-11 md:h-12 text-sm md:text-base">
