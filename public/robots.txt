@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://converterx.app/sitemap.xml
+Sitemap: https://converterx.net/sitemap.xml
