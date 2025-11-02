@@ -11,12 +11,13 @@ export default function Index() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-muted/20">
       <Navbar onSearchFocus={() => setSearchOpen(true)} />
 
-      {/* --- Google AdSense Banner --- */}
-      <AdBanner />
-      {/* --- End of Ad Section --- */}
+      {/* --- Google AdSense Banner (Only one instance) --- */}
+      <div className="my-2 flex justify-center">
+        <AdBanner />
+      </div>
 
       <main className="flex-1">
         {/* Hero Section */}
