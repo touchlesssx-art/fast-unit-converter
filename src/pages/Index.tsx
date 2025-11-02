@@ -9,39 +9,44 @@ export default function Index() {
   const [searchOpen, setSearchOpen] = useState(false);
   const navigate = useNavigate();
 
-  // ✅ Google AdSense Script Loader
+  // ✅ Google AdSense Script Loader (auto show when loaded)
   useEffect(() => {
     const script = document.createElement('script');
     script.async = true;
     script.src =
-      'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1578209603604474'; // 🔹 Replace with your AdSense client ID
+      'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1578209603604474';
     script.crossOrigin = 'anonymous';
     document.body.appendChild(script);
 
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {
-      console.error('AdSense error:', e);
-    }
+    const timer = setTimeout(() => {
+      try {
+        const ad = document.querySelector('.adsbygoogle');
+        if (ad) ad.style.display = 'block'; // only show when loaded
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        console.error('AdSense error:', e);
+      }
+    }, 2000); // small delay for clean load
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar onSearchFocus={() => setSearchOpen(true)} />
 
-      {/* --- Google AdSense Banner --- */}
+      {/* --- Google AdSense Banner (clean version) --- */}
       <div className="w-full flex justify-center items-center py-3 bg-transparent">
         <ins
           className="adsbygoogle"
           style={{
-            display: 'block',
+            display: 'none', // 🧠 hidden until loaded
             textAlign: 'center',
-            minHeight: '60px',
             width: '100%',
             maxWidth: '970px',
           }}
-          data-ad-client="ca-pub1578209603604474" // 🔹 Replace with your AdSense client ID
-          data-ad-slot="4995210375" // 🔹 Replace with your Ad Slot ID
+          data-ad-client="ca-pub-1578209603604474"
+          data-ad-slot="4995210375"
           data-ad-format="auto"
           data-full-width-responsive="true"
         ></ins>
