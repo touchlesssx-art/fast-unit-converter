@@ -7,7 +7,7 @@ declare global {
   }
 }
 
-export const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // Replace with actual GA4 ID
+export const GA_MEASUREMENT_ID = 'G-YYCDZBZ8MS';
 
 export function trackEvent(eventName: string, parameters?: Record<string, any>) {
   if (typeof window !== 'undefined' && window.gtag) {
