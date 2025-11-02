@@ -1,68 +1,21 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import SearchModal from '@/components/SearchModal';
-import { DollarSign, Ruler } from 'lucide-react';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import SearchModal from "@/components/SearchModal";
+import AdBanner from "@/components/AdBanner";
+import { DollarSign, Ruler } from "lucide-react";
 
 export default function Index() {
   const [searchOpen, setSearchOpen] = useState(false);
-  const [adLoaded, setAdLoaded] = useState(false);
   const navigate = useNavigate();
-
-  // ✅ Google AdSense Lazy Loader
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.async = true;
-    script.src =
-      'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1578209603604474';
-    script.crossOrigin = 'anonymous';
-    document.body.appendChild(script);
-
-    const timeout = setTimeout(() => {
-      try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-        // ✨ Add listener for when ad is actually loaded
-        const observer = new MutationObserver((mutations) => {
-          mutations.forEach((m) => {
-            if (m.addedNodes.length > 0) {
-              setAdLoaded(true);
-              observer.disconnect();
-            }
-          });
-        });
-        const adEl = document.querySelector('.adsbygoogle');
-        if (adEl) observer.observe(adEl, { childList: true });
-      } catch (e) {
-        console.error('AdSense error:', e);
-      }
-    }, 1000);
-
-    return () => clearTimeout(timeout);
-  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar onSearchFocus={() => setSearchOpen(true)} />
 
       {/* --- Google AdSense Banner --- */}
-      {adLoaded && (
-        <div className="w-full flex justify-center items-center py-3 bg-transparent">
-          <ins
-            className="adsbygoogle"
-            style={{
-              display: 'block',
-              textAlign: 'center',
-              width: '100%',
-              maxWidth: '970px',
-            }}
-            data-ad-client="ca-pub-1578209603604474"
-            data-ad-slot="4995210375"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          ></ins>
-        </div>
-      )}
+      <AdBanner />
       {/* --- End of Ad Section --- */}
 
       <main className="flex-1">
@@ -70,7 +23,7 @@ export default function Index() {
         <section
           className="relative py-8 md:py-12 px-4 overflow-hidden min-h-[60vh] flex items-center"
           style={{
-            background: 'linear-gradient(180deg, #f8faff 0%, #e9edff 100%)',
+            background: "linear-gradient(180deg, #f8faff 0%, #e9edff 100%)",
           }}
         >
           <div className="container mx-auto relative z-10">
@@ -80,13 +33,13 @@ export default function Index() {
               </h1>
               <p
                 className="text-lg md:text-xl text-foreground mb-1 font-semibold animate-fade-in"
-                style={{ animationDelay: '0.1s' }}
+                style={{ animationDelay: "0.1s" }}
               >
                 Convert anything. Instantly.
               </p>
               <p
                 className="text-sm md:text-base text-muted-foreground mb-6 md:mb-8 animate-fade-in"
-                style={{ animationDelay: '0.2s' }}
+                style={{ animationDelay: "0.2s" }}
               >
                 Fast, accurate, mobile-friendly converter for all your needs.
               </p>
@@ -95,7 +48,7 @@ export default function Index() {
               <div className="mt-6 md:mt-8">
                 <h2
                   className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-foreground animate-fade-in"
-                  style={{ animationDelay: '0.3s' }}
+                  style={{ animationDelay: "0.3s" }}
                 >
                   Choose a Category
                 </h2>
@@ -103,9 +56,9 @@ export default function Index() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
                   {/* Currency Card */}
                   <button
-                    onClick={() => navigate('/category/currency')}
+                    onClick={() => navigate("/category/currency")}
                     className="group relative overflow-hidden bg-gradient-to-br from-primary/5 to-primary/10 hover:from-primary/10 hover:to-primary/20 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in border border-primary/20 hover:border-primary/40"
-                    style={{ animationDelay: '0.4s' }}
+                    style={{ animationDelay: "0.4s" }}
                   >
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/20 via-transparent to-transparent blur-xl" />
                     <div className="relative z-10 flex flex-col items-center gap-3">
@@ -116,16 +69,18 @@ export default function Index() {
                         <h3 className="text-xl md:text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
                           💵 Currency
                         </h3>
-                        <p className="text-xs md:text-sm text-muted-foreground mt-1">⏳ BETA</p>
+                        <p className="text-xs md:text-sm text-muted-foreground mt-1">
+                          ⏳ BETA
+                        </p>
                       </div>
                     </div>
                   </button>
 
                   {/* Unit Card */}
                   <button
-                    onClick={() => navigate('/units')}
+                    onClick={() => navigate("/units")}
                     className="group relative overflow-hidden bg-gradient-to-br from-secondary/5 to-secondary/10 hover:from-secondary/10 hover:to-secondary/20 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in border border-secondary/20 hover:border-secondary/40"
-                    style={{ animationDelay: '0.5s' }}
+                    style={{ animationDelay: "0.5s" }}
                   >
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-secondary/20 via-transparent to-transparent blur-xl" />
                     <div className="relative z-10 flex flex-col items-center gap-3">
