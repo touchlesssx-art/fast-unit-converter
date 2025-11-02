@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { categories } from '@/converters/conversionFactors';
 import { popularPairs } from '@/converters/popularPairs';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import ConverterLayout from '@/components/ConverterLayout';
 import SearchModal from '@/components/SearchModal';
 import UnitConverter from '@/components/UnitConverter';
 
@@ -38,19 +37,14 @@ export default function ConvertPage() {
   
   if (!category || !foundFrom || !foundTo) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar onSearchFocus={() => setSearchOpen(true)} />
-        <main className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold mb-2">Conversion not found</h1>
-            <p className="text-muted-foreground">
-              We couldn't find a conversion for {slug}
-            </p>
+      <>
+        <ConverterLayout title="Conversion not found" subtitle={`We couldn't find a conversion for ${slug}`}>
+          <div className="text-center py-8">
+            <p className="text-muted-foreground">Please try searching for a different conversion.</p>
           </div>
-        </main>
-        <Footer />
+        </ConverterLayout>
         <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
-      </div>
+      </>
     );
   }
   
@@ -69,7 +63,7 @@ export default function ConvertPage() {
   } : null;
   
   return (
-    <div className="min-h-screen flex flex-col">
+    <>
       <Helmet>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -86,44 +80,33 @@ export default function ConvertPage() {
         )}
       </Helmet>
       
-      <Navbar onSearchFocus={() => setSearchOpen(true)} />
-      
-      <main className="flex-1 py-2 px-4 flex items-center">
-        <div className="container mx-auto w-full">
-          <div className="text-center mb-2">
-            <h1 className="text-2xl md:text-3xl font-bold mb-1">
-              {category.units[fromUnit!].name} to {category.units[toUnit!].name}
-            </h1>
-            <p className="text-xs md:text-sm text-muted-foreground">
-              Convert {category.name.toLowerCase()} instantly
-            </p>
-          </div>
-          
-          <UnitConverter 
-            categoryId={category.id} 
-            defaultFrom={fromUnit}
-            defaultTo={toUnit}
-          />
-          
-          {/* FAQ Section if available */}
-          {pairData?.faq && (
-            <div className="max-w-2xl mx-auto mt-6">
-              <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
-              <div className="space-y-4">
-                {pairData.faq.map((faq, idx) => (
-                  <div key={idx} className="bg-card rounded-xl p-6 shadow-sm">
-                    <h3 className="font-semibold mb-2">{faq.question}</h3>
-                    <p className="text-muted-foreground">{faq.answer}</p>
-                  </div>
-                ))}
-              </div>
+      <ConverterLayout 
+        title={`${category.units[fromUnit!].name} to ${category.units[toUnit!].name}`}
+        subtitle={`Convert ${category.name.toLowerCase()} instantly`}
+      >
+        <UnitConverter 
+          categoryId={category.id} 
+          defaultFrom={fromUnit}
+          defaultTo={toUnit}
+        />
+        
+        {/* FAQ Section if available */}
+        {pairData?.faq && (
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+            <div className="space-y-4">
+              {pairData.faq.map((faq, idx) => (
+                <div key={idx} className="bg-card/50 backdrop-blur-sm border-2 rounded-xl p-6 shadow-sm">
+                  <h3 className="font-semibold mb-2">{faq.question}</h3>
+                  <p className="text-muted-foreground">{faq.answer}</p>
+                </div>
+              ))}
             </div>
-          )}
-        </div>
-      </main>
+          </div>
+        )}
+      </ConverterLayout>
       
-      <Footer />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
-    </div>
+    </>
   );
 }

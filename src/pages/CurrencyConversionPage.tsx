@@ -1,19 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeftRight, ArrowLeft, Copy, Check } from 'lucide-react';
+import { useParams } from 'react-router-dom';
+import { ArrowLeftRight, Copy, Check } from 'lucide-react';
 import { fetchExchangeRates, type CurrencyInfo } from '@/utils/currencyApi';
 import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card } from '@/components/ui/card';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import { Helmet } from 'react-helmet-async';
+import ConverterLayout from '@/components/ConverterLayout';
 
 export default function CurrencyConversionPage() {
   const { currency } = useParams<{ currency: string }>();
-  const navigate = useNavigate();
   
   const [amount, setAmount] = useState('1');
   const [fromCurrency, setFromCurrency] = useState(currency?.toUpperCase() || 'AZN');
@@ -135,95 +133,81 @@ export default function CurrencyConversionPage() {
         <meta name="description" content={`Convert ${fromCurrency} to ${toCurrency} with real-time exchange rates. Free currency converter with live rates and historical data.`} />
       </Helmet>
 
-      <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-muted/20">
-        <Navbar />
-        
-        <main className="flex-1 container mx-auto px-4 py-1 flex items-center">
-          <div className="max-w-2xl mx-auto w-full space-y-1 animate-fade-in">
-            {/* Back Button */}
-            <Button
-              variant="ghost"
-              onClick={() => navigate('/category/currency')}
-              className="hover:bg-primary/10 h-8 text-xs"
-              size="sm"
-            >
-              <ArrowLeft className="h-3 w-3 mr-1" />
-              Back
-            </Button>
-
-            {/* Header */}
-            <div className="text-center">
-              <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-[#6366F1] to-[#4F46E5] bg-clip-text text-transparent">
-                💸 {fromCurrency} to {toCurrency}
-              </h1>
-            </div>
-
-            {/* Main Content */}
-            <Card className="p-3 md:p-4 rounded-2xl shadow-xl bg-gradient-to-br from-background to-muted/20">
+      <ConverterLayout 
+        title={`💱 ${fromCurrency} to ${toCurrency}`}
+        subtitle="Real-time currency conversion"
+      >
+        <Card className="p-6 rounded-2xl shadow-lg bg-card/50 backdrop-blur-sm border-2">
               {/* Converter Form */}
-              <div className="space-y-2.5">
+              <div className="space-y-4">
 
                 {/* Amount Input */}
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-muted-foreground block text-center">Amount</label>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">Amount</label>
                   <Input
                     type="number"
                     inputMode="decimal"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="Enter amount"
-                    className="h-10 md:h-11 text-base md:text-lg font-semibold rounded-xl text-center"
+                    className="h-12 text-lg font-semibold rounded-xl"
                   />
                 </div>
 
                 {/* Currency Dropdowns with Swap */}
-                <div className="space-y-2">
-                  <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                    <SelectTrigger className="w-full h-10 md:h-11 bg-background rounded-xl text-sm">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-popover z-50 max-h-[200px] md:max-h-[300px]">
-                      {allCurrencies.map((c) => (
-                        <SelectItem key={c.code} value={c.code} className="text-sm">
-                          {c.flag} {c.code} — {c.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div className="space-y-3">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">From</label>
+                    <Select value={fromCurrency} onValueChange={setFromCurrency}>
+                      <SelectTrigger className="w-full h-12 bg-background rounded-xl">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-popover z-50 max-h-[300px]">
+                        {allCurrencies.map((c) => (
+                          <SelectItem key={c.code} value={c.code}>
+                            {c.flag} {c.code} — {c.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                  <div className="flex justify-center -my-1">
+                  <div className="flex justify-center -my-1.5">
                     <Button
                       variant="outline"
                       size="icon"
                       onClick={handleSwap}
-                      className="h-8 w-8 md:h-9 md:w-9 rounded-full bg-background border-2 hover:bg-primary/10 hover:rotate-180 transition-all duration-300 shadow-sm"
+                      className="h-10 w-10 rounded-full bg-background border-2 hover:bg-primary/10 hover:rotate-180 transition-all duration-300 shadow-sm"
                     >
-                      <ArrowLeftRight className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                      <ArrowLeftRight className="h-4 w-4" />
                     </Button>
                   </div>
 
-                  <Select value={toCurrency} onValueChange={setToCurrency}>
-                    <SelectTrigger className="w-full h-10 md:h-11 bg-background rounded-xl text-sm">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-popover z-50 max-h-[200px] md:max-h-[300px]">
-                      {allCurrencies.map((c) => (
-                        <SelectItem key={c.code} value={c.code} className="text-sm">
-                          {c.flag} {c.code} — {c.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">To</label>
+                    <Select value={toCurrency} onValueChange={setToCurrency}>
+                      <SelectTrigger className="w-full h-12 bg-background rounded-xl">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-popover z-50 max-h-[300px]">
+                        {allCurrencies.map((c) => (
+                          <SelectItem key={c.code} value={c.code}>
+                            {c.flag} {c.code} — {c.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
 
                 {/* Result Display */}
                 {exchangeRate && result && (
-                  <div className="space-y-2">
-                    <div className="p-2.5 md:p-3 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
-                      <p className="text-base md:text-lg font-bold text-center">
+                  <div className="space-y-3">
+                    <div className="p-4 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border-2 border-primary/20">
+                      <p className="text-xl font-bold text-center">
                         {amount} {fromCurrency} = {result} {toCurrency}
                       </p>
-                      <p className="text-xs text-muted-foreground text-center mt-1">
+                      <p className="text-sm text-muted-foreground text-center mt-2">
                         1 {fromCurrency} = {exchangeRate.toFixed(4)} {toCurrency}
                       </p>
                     </div>
@@ -232,16 +216,16 @@ export default function CurrencyConversionPage() {
                     <Button
                       onClick={handleCopy}
                       variant="outline"
-                      className="w-full h-9 md:h-10 text-xs md:text-sm font-semibold rounded-xl hover:bg-primary/10 transition-all"
+                      className="w-full h-11 text-sm font-semibold rounded-xl hover:bg-primary/10 transition-all"
                     >
                       {copied ? (
                         <>
-                          <Check className="h-3 w-3 md:h-3.5 md:w-3.5 mr-1.5" />
+                          <Check className="h-4 w-4 mr-2" />
                           Copied!
                         </>
                       ) : (
                         <>
-                          <Copy className="h-3 w-3 md:h-3.5 md:w-3.5 mr-1.5" />
+                          <Copy className="h-4 w-4 mr-2" />
                           Copy Result
                         </>
                       )}
@@ -251,15 +235,11 @@ export default function CurrencyConversionPage() {
               </div>
             </Card>
 
-            {/* Footer */}
-            <div className="text-center text-[10px] md:text-xs text-muted-foreground">
+            {/* Footer Info */}
+            <p className="text-center text-xs text-muted-foreground">
               Exchange data by exchangerate.host
-            </div>
-          </div>
-        </main>
-
-        <Footer />
-      </div>
+            </p>
+          </ConverterLayout>
     </>
   );
 }
