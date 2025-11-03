@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SearchModal from "@/components/SearchModal";
 import AdBanner from "@/components/AdBanner";
+import CreatorMessageBot from "@/components/CreatorMessageBot";
 import { DollarSign, Ruler } from "lucide-react";
 
 export default function Index() {
@@ -107,6 +108,7 @@ export default function Index() {
 
       <Footer />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <CreatorMessageBot />
     </div>
   );
 }
