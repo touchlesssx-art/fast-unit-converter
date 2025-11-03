@@ -102,7 +102,7 @@ export default function CreatorMessageBot() {
             onClick={handleClose}
           />
           
-          <div className="relative max-w-lg w-full bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-primary/30 p-6 md:p-8 animate-scale-in">
+          <div className="relative max-w-lg w-full max-h-[85vh] overflow-y-auto bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-primary/30 p-6 md:p-8 animate-scale-in">
             <Button
               variant="ghost"
               size="icon"
@@ -112,11 +112,11 @@ export default function CreatorMessageBot() {
               <X className="h-5 w-5" />
             </Button>
 
-            <div className="flex justify-center mb-6">
-              <img src={botImage} alt="Bot" className="w-20 h-20 drop-shadow-[0_0_20px_rgba(79,70,229,0.5)]" />
+            <div className="flex justify-center mb-4">
+              <img src={botImage} alt="Bot" className="w-16 h-16 drop-shadow-[0_0_20px_rgba(79,70,229,0.5)]" />
             </div>
 
-            <div className="text-center space-y-4 mb-6">
+            <div className="text-center space-y-3 mb-4">
               <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
                 A Message from the Creator
               </h2>
@@ -134,13 +134,13 @@ export default function CreatorMessageBot() {
             </div>
 
             {/* Message Box */}
-            <div className="space-y-3 mb-6">
+            <div className="space-y-2 mb-4">
               <label className="text-sm font-medium text-gray-700">💬 Send me a message</label>
               <Textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Your thoughts, feedback, or just say hi..."
-                className="resize-none h-24 border-2 border-primary/20 focus:border-primary/40"
+                className="resize-none h-20 border-2 border-primary/20 focus:border-primary/40"
               />
               <Button
                 onClick={handleSendMessage}
