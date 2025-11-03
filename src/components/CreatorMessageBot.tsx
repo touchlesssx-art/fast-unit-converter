@@ -69,7 +69,7 @@ export default function CreatorMessageBot() {
         <div className="fixed top-16 right-4 md:right-8 z-50 animate-fade-in">
           <div className="flex flex-col items-center gap-3">
             {/* Bot Image - Now on top */}
-            <div className="w-24 h-24 md:w-28 md:h-28 animate-[bounce_2s_ease-in-out_infinite] drop-shadow-[0_0_25px_rgba(79,70,229,0.6)]">
+            <div className="w-24 h-24 md:w-28 md:h-28 animate-[jiggle_3s_ease-in-out_infinite] drop-shadow-[0_0_25px_rgba(79,70,229,0.6)]">
               <img 
                 src={botImage} 
                 alt="Welcome Bot" 
@@ -191,6 +191,21 @@ export default function CreatorMessageBot() {
       )}
 
       <style>{`
+        @keyframes jiggle {
+          0%, 100% {
+            transform: rotate(0deg) translateY(0px);
+          }
+          25% {
+            transform: rotate(2deg) translateY(-3px);
+          }
+          50% {
+            transform: rotate(0deg) translateY(0px);
+          }
+          75% {
+            transform: rotate(-2deg) translateY(-3px);
+          }
+        }
+
         .fireworks-container {
           position: absolute;
           width: 100%;
