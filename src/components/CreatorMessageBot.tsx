@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import botImage from '@/assets/bot.png';
+import botImage from '@/assets/bot-mascot.png';
 
 export default function CreatorMessageBot() {
   const [visible, setVisible] = useState(false);
@@ -66,27 +66,28 @@ export default function CreatorMessageBot() {
     <>
       {/* Floating Bot */}
       {!modalOpen && !showFireworks && !showWelcome && (
-        <div className="fixed top-20 right-4 md:right-8 z-50 animate-fade-in">
-          <div className="relative">
-            {/* Bot Image */}
-            <div className="w-20 h-20 md:w-24 md:h-24 animate-[bounce_2s_ease-in-out_infinite]">
+        <div className="fixed top-16 right-4 md:right-8 z-50 animate-fade-in">
+          <div className="flex flex-col items-center gap-3">
+            {/* Bot Image - Now on top */}
+            <div className="w-24 h-24 md:w-28 md:h-28 animate-[bounce_2s_ease-in-out_infinite] drop-shadow-[0_0_25px_rgba(79,70,229,0.6)]">
               <img 
                 src={botImage} 
                 alt="Welcome Bot" 
-                className="w-full h-full drop-shadow-[0_0_15px_rgba(79,70,229,0.5)]"
+                className="w-full h-full"
               />
             </div>
             
-            {/* Message Bubble */}
-            <div className="absolute top-0 right-24 md:right-28 w-56 md:w-64 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border-2 border-primary/20 p-4 animate-scale-in">
-              <p className="text-sm font-medium text-gray-800 mb-3">
-                👋 Hey! Website creator has a message for you!
+            {/* Message Bubble - Below bot */}
+            <div className="w-64 md:w-72 bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-xl rounded-2xl shadow-[0_8px_32px_rgba(79,70,229,0.3)] border-2 border-primary/30 p-5 animate-scale-in relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-white/95 border-l-2 border-t-2 border-primary/30 rotate-45 backdrop-blur-xl" />
+              <p className="text-sm font-semibold text-foreground mb-4 text-center leading-relaxed">
+                👋 Hey! Creator has a message for you!
               </p>
               <Button
                 onClick={handleRead}
-                className="w-full bg-gradient-to-r from-primary to-blue-500 hover:shadow-lg hover:shadow-primary/50 transition-all duration-300"
+                className="w-full bg-gradient-to-r from-primary via-blue-500 to-primary bg-[length:200%_100%] hover:bg-[position:100%_0] hover:shadow-xl hover:shadow-primary/50 transition-all duration-500 font-semibold text-base py-6 rounded-xl"
               >
-                ✨ Read
+                ✨ Read Message
               </Button>
             </div>
           </div>
@@ -111,8 +112,8 @@ export default function CreatorMessageBot() {
               <X className="h-5 w-5" />
             </Button>
 
-            <div className="flex justify-center mb-4">
-              <img src={botImage} alt="Bot" className="w-16 h-16" />
+            <div className="flex justify-center mb-6">
+              <img src={botImage} alt="Bot" className="w-20 h-20 drop-shadow-[0_0_20px_rgba(79,70,229,0.5)]" />
             </div>
 
             <div className="text-center space-y-4 mb-6">
