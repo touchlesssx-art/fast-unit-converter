@@ -7,23 +7,27 @@ declare global {
 }
 
 export default function AdBanner() {
-  const [loaded, setLoaded] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-        setLoaded(true);
-      } catch (e) {
-        console.error("Adsense error:", e);
+        if (window.adsbygoogle && Array.isArray(window.adsbygoogle)) {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+          setReady(true);
+        } else {
+          console.log("AdSense not active yet — safe mode");
+        }
+      } catch {
+        // Silent in review mode
       }
-    }, 800); // Reklam gəlməyə başlamazdan əvvəl kiçik gecikmə
+    }, 800);
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className="flex justify-center overflow-hidden">
-      {loaded && (
+      {ready && (
         <ins
           className="adsbygoogle"
           style={{
