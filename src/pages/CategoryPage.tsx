@@ -9,19 +9,18 @@ import CurrencyConverter from '@/components/CurrencyConverter';
 import AdBanner from '@/components/AdBanner'; // ✅ Added import
 
 export default function CategoryPage() {
-  const { categoryId } = useParams<{ categoryId: string }>();
+  const {
+    categoryId
+  } = useParams<{
+    categoryId: string;
+  }>();
   const [searchOpen, setSearchOpen] = useState(false);
-
-  const category = categories.find((c) => c.id === categoryId);
-
+  const category = categories.find(c => c.id === categoryId);
   if (!category) {
     return <div>Category not found</div>;
   }
-
   const isCurrency = categoryId === 'currency';
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Navbar onSearchFocus={() => setSearchOpen(true)} />
 
       {/* ✅ Google AdSense Banner just below Navbar */}
@@ -34,15 +33,12 @@ export default function CategoryPage() {
               {isCurrency ? '💸 ' : ''}
               {category.name} Converter
             </h1>
-            {!isCurrency && (
-              <p className="text-muted-foreground">
+            {!isCurrency && <p className="text-muted-foreground">
                 Convert {category.name.toLowerCase()} units instantly
-              </p>
-            )}
+              </p>}
           </div>
 
-          {isCurrency ? (
-            <>
+          {isCurrency ? <>
               <CurrencyConverter />
               
               {/* Currency Directory Description */}
@@ -56,7 +52,7 @@ export default function CategoryPage() {
                 
                 <div className="space-y-4 text-sm md:text-base text-foreground/90 leading-relaxed">
                   <p>
-                    ConverterX offers an organized directory of more than 160 international currencies, giving users a clear and simple way to access the converter they need. Each currency in this list opens a dedicated page where users can enter an amount and instantly view the converted value. This section is designed to help travelers, students, businesses and everyday users quickly navigate between different currencies without confusion.
+                    ConverterX offers an organized directory of more than 160+ international currencies, giving users a clear and simple way to access the converter they need. Each currency in this list opens a dedicated page where users can enter an amount and instantly view the converted value. This section is designed to help travelers, students, businesses and everyday users quickly navigate between different currencies without confusion.
                   </p>
                   
                   <p>
@@ -64,15 +60,11 @@ export default function CategoryPage() {
                   </p>
                 </div>
               </div>
-            </>
-          ) : (
-            <UnitConverter categoryId={categoryId!} />
-          )}
+            </> : <UnitConverter categoryId={categoryId!} />}
         </div>
       </main>
 
       <Footer />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
-    </div>
-  );
+    </div>;
 }
