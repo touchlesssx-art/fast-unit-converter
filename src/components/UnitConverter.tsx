@@ -223,12 +223,9 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
       </div>
 
       {/* Description Block */}
-      <div className="mt-4 p-4 md:p-5 rounded-xl bg-muted/30 border border-border/50 space-y-2">
+      <div className="mt-4 p-4 md:p-5 rounded-xl bg-muted/30 border border-border/50">
         <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
           This unit converter helps users calculate the value between {category.units[fromUnit].name} ({category.units[fromUnit].symbol}) and {category.units[toUnit].name} ({category.units[toUnit].symbol}). It uses precise conversion formulas to ensure accurate results. The tool is designed for quick, clear, and reliable unit conversions for education, work, travel, or everyday use. Enter the amount and instantly see the equivalent value in the selected unit.
-        </p>
-        <p className="text-xs md:text-sm text-muted-foreground font-medium">
-          Status: Under Development
         </p>
       </div>
     </div>
