@@ -104,6 +104,19 @@ export default function Index() {
             </div>
           </div>
         </section>
+
+        {/* Why ConverterX Section */}
+        <section className="py-12 md:py-16 px-4 bg-background">
+          <div className="container mx-auto max-w-4xl">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-foreground flex items-center justify-center gap-2">
+              <span>⭐</span>
+              <span>Why ConverterX?</span>
+            </h2>
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed text-center">
+              ConverterX is a simple and fast tool designed to help users convert common units with ease. The platform currently offers a basic Unit Converter for everyday measurements and a Beta Currency Converter that is still under development. Our focus is on providing a clean and modern design that makes conversions easy to read and quick to use. ConverterX works smoothly on both mobile and desktop devices, offering a lightweight structure without unnecessary features. The goal of the platform is to grow step by step, adding new converters and improving accuracy over time. Whether for study, travel or daily tasks, ConverterX aims to be a practical and reliable tool for regular use.
+            </p>
+          </div>
+        </section>
       </main>
 
       <Footer />
