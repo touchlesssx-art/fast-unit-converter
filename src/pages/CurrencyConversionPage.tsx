@@ -340,6 +340,16 @@ export default function CurrencyConversionPage() {
               </div>
             </Card>
 
+            {/* Description Block */}
+            <div className="p-4 md:p-5 rounded-xl bg-muted/30 border border-border/50 space-y-2">
+              <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
+                This currency converter helps users calculate the value between {getCurrencyName(fromCurrency)} ({fromCurrency}) and {getCurrencyName(toCurrency)} ({toCurrency}). It uses updated exchange rate data provided by a third-party source. The tool is designed for quick, clear, and accurate currency conversions for travel, business, budgeting, or everyday use. Enter the amount and instantly see the equivalent value in the selected currency.
+              </p>
+              <p className="text-xs md:text-sm text-muted-foreground font-medium">
+                Status: Under Development
+              </p>
+            </div>
+
             <div className="text-center text-[10px] md:text-xs text-muted-foreground">
               Exchange data by exchangerate.host
             </div>
