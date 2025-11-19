@@ -15,8 +15,6 @@ import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 import ConsentBanner from "./components/ConsentBanner";
 import ScrollToTop from "./components/ScrollToTop";
-import AdBanner from "./components/AdBanner"; // ✅ ELAVƏ OLUNDU
-
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -27,10 +25,6 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <ScrollToTop />
-
-          {/* ✅ Universal Ad Banner – bütün səhifələrdə görünəcək */}
-          <AdBanner />
-
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/units" element={<UnitsPage />} />
