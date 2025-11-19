@@ -118,9 +118,9 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
   };
   
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <div className="bg-card rounded-2xl shadow-lg p-4 md:p-6 space-y-4">
-        <div className="flex items-center justify-between">
+    <div className="w-full max-w-[420px] md:max-w-2xl mx-auto">
+      <div className="bg-card rounded-[20px] md:rounded-2xl shadow-lg p-6 md:p-6 space-y-4 md:space-y-4">
+        <div className="flex items-center justify-between mb-3 md:mb-0">
           <h2 className="text-lg md:text-xl font-bold text-center flex-1">{category.name} Converter</h2>
           <Button
             variant="ghost"
@@ -133,9 +133,9 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
         </div>
         
         {/* From Unit */}
-        <div className="space-y-2">
-          <label className="text-xs md:text-sm font-medium block text-center">From</label>
-          <div className="flex gap-2 md:gap-3">
+        <div className="space-y-3 md:space-y-2">
+          <label className="text-sm md:text-sm font-medium block text-center">From</label>
+          <div className="flex gap-3 md:gap-3">
             <Input
               type="tel"
               inputMode="decimal"
@@ -144,11 +144,11 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
               onFocus={handleFromFocus}
               onBlur={handleFromBlur}
               onChange={handleFromValueChange}
-              className="flex-1 text-sm md:text-base h-11 md:h-12 text-center"
+              className="flex-1 text-lg md:text-base min-h-[68px] md:h-12 text-center rounded-[20px] md:rounded-md px-4"
               placeholder="0"
             />
             <Select value={fromUnit} onValueChange={setFromUnit}>
-              <SelectTrigger className="w-32 md:w-40 h-11 md:h-12 text-sm md:text-base">
+              <SelectTrigger className="w-36 md:w-40 min-h-[68px] md:h-12 text-lg md:text-base rounded-[20px] md:rounded-md px-4">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-popover max-h-[200px] md:max-h-[300px]">
@@ -163,32 +163,32 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
         </div>
         
         {/* Swap Button */}
-        <div className="flex justify-center -my-1.5">
+        <div className="flex justify-center my-5 md:-my-1.5">
           <Button
             variant="outline"
             size="icon"
             onClick={handleSwap}
-            className="h-9 w-9 md:h-10 md:w-10 rounded-full bg-background border-2 hover:bg-primary/10 transition-all shadow-sm"
+            className="h-14 w-14 md:h-10 md:w-10 rounded-full bg-background border-2 hover:bg-primary/10 transition-all shadow-sm"
           >
-            <ArrowLeftRight className={`h-3.5 w-3.5 md:h-5 md:w-5 transition-transform duration-300 ${rotated ? 'rotate-180' : ''}`} />
+            <ArrowLeftRight className={`h-5 w-5 md:h-5 md:w-5 transition-transform duration-300 ${rotated ? 'rotate-180' : ''}`} />
           </Button>
         </div>
         
         {/* To Unit */}
-        <div className="space-y-2">
-          <label className="text-xs md:text-sm font-medium block text-center">To</label>
-          <div className="flex gap-2 md:gap-3">
+        <div className="space-y-3 md:space-y-2">
+          <label className="text-sm md:text-sm font-medium block text-center">To</label>
+          <div className="flex gap-3 md:gap-3">
             <Input
               type="tel"
               inputMode="decimal"
               pattern="[0-9]*"
               value={toValue}
               onChange={handleToValueChange}
-              className="flex-1 text-sm md:text-base h-11 md:h-12 text-center"
+              className="flex-1 text-lg md:text-base min-h-[68px] md:h-12 text-center rounded-[20px] md:rounded-md px-4"
               placeholder="Result"
             />
             <Select value={toUnit} onValueChange={setToUnit}>
-              <SelectTrigger className="w-32 md:w-40 h-11 md:h-12 text-sm md:text-base">
+              <SelectTrigger className="w-36 md:w-40 min-h-[68px] md:h-12 text-lg md:text-base rounded-[20px] md:rounded-md px-4">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-popover max-h-[200px] md:max-h-[300px]">
@@ -205,7 +205,7 @@ export default function UnitConverter({ categoryId, defaultFrom, defaultTo }: Un
         {/* Copy Button */}
         <Button
           onClick={handleCopy}
-          className="w-full h-11 md:h-12 text-sm md:text-base"
+          className="w-full min-h-[68px] md:h-12 text-lg md:text-base font-bold rounded-[20px] md:rounded-md mt-5 md:mt-4"
           disabled={!toValue}
         >
           {copied ? (
